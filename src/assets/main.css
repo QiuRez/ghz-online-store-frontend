@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.footer-nav-menu-phone {
+  @apply block md:hidden fixed bottom-0 h-[100px] p-4 w-full shadow-[15px_18px_15px_15px_rgba(0,0,0,0.5)]
+}
+
+.footer-nav-menu-phone-item {
+  @apply flex flex-col items-center cursor-pointer h-10 justify-between
+}
