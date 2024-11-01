@@ -3,10 +3,78 @@
 @tailwind utilities;
 
 
+:root {
+  --primary-color: #D3D9FF;
+  --primary-background-color: #F4FCFD;
+}
+
+body {
+  background-color: var(--primary-background-color);
+}
+
+a, p, h1, h2, h3, h4, h5, h6, input {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.khula-light {
+  font-family: "Khula", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.khula-regular {
+  font-family: "Khula", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.khula-semibold {
+  font-family: "Khula", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.khula-bold {
+  font-family: "Khula", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.khula-extrabold {
+  font-family: "Khula", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.primary-button {
+  @apply bg-primary-color flex items-center justify-center rounded-full
+}
+
+
 .footer-nav-menu-phone {
-  @apply block md:hidden fixed bottom-0 h-[100px] p-4 w-full shadow-[15px_18px_15px_15px_rgba(0,0,0,0.5)]
+  @apply block md:hidden fixed bottom-0 h-[80px] p-4 w-full shadow-[15px_18px_15px_15px_rgba(0,0,0,0.5)] bg-white
 }
 
 .footer-nav-menu-phone-item {
   @apply flex flex-col items-center cursor-pointer h-10 justify-between
+}
+
+.header-phone {
+  @apply bg-white shadow-[0px_-5px_15px_10px_rgba(0,0,0,0.1)]
+}
+
+.search-phone-form {
+  @apply relative w-full bg-primary-color rounded-lg overflow-hidden flex
+}
+
+.search-phone-input {
+  @apply w-full bg-primary-color p-2 focus-visible:outline-none
+}
+
+.search-phone-button {
+  @apply w-[50px] grid place-items-center
 }
