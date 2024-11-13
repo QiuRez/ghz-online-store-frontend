@@ -1,19 +1,21 @@
 <template>
+	<footer class="footer">
+		<div class="footer-nav-menu-phone">
+			<nav class="h-full">
+				<ul class="items-center justify-around flex list-none h-full">
+					<li v-for="item in menuItemsPhone" @click="router.push({ name: item.routerName })"
+						class="footer-nav-menu-phone-item">
+						<component :is="item.icon" />
+						<p class="text-xs">{{ item.text }}</p>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</footer>
 	<!-- TODO: Дополнить футер информацией и полезные ссылки -->
 
 
 	<!-- For mobile/tablet menu -->
-	<div class="footer-nav-menu-phone">
-		<nav class="h-full">
-			<ul class="items-center justify-around flex list-none h-full">
-				<li v-for="item in menuItemsPhone" @click="router.push({ name: item.routerName })"
-					class="footer-nav-menu-phone-item">
-					<component :is="item.icon" />
-					<p class="text-xs">{{ item.text }}</p>
-				</li>
-			</ul>
-		</nav>
-	</div>
 </template>
 
 <script setup>

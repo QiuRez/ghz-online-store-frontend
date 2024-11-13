@@ -50,10 +50,25 @@ a, p, h1, h2, h3, h4, h5, h6, input {
   font-style: normal;
 }
 
+.p-carousel-indicator-active .p-carousel-indicator-button {
+  background: #97a5fa !important;
+}
+
+.p-button-icon-only {
+  width: 20px !important;
+}
+
 .primary-button {
   @apply bg-primary-color flex items-center justify-center rounded-full
 }
 
+.main {
+  @apply max-w-[1280px] m-auto mt-7
+}
+
+.footer {
+  @apply max-w-[1280px]
+}
 
 .footer-nav-menu-phone {
   @apply block md:hidden fixed bottom-0 h-[80px] p-4 w-full shadow-[15px_18px_15px_15px_rgba(0,0,0,0.5)] bg-white
@@ -64,7 +79,7 @@ a, p, h1, h2, h3, h4, h5, h6, input {
 }
 
 .header-phone {
-  @apply bg-white shadow-[0px_-5px_15px_10px_rgba(0,0,0,0.1)]
+  @apply bg-white shadow-[0px_-5px_15px_10px_rgba(0,0,0,0.1)] h-[135px] md:h-[90px] p-4
 }
 
 .search-phone-form {
@@ -72,9 +87,13 @@ a, p, h1, h2, h3, h4, h5, h6, input {
 }
 
 .search-phone-input {
-  @apply w-full bg-primary-color p-2 focus-visible:outline-none
+  @apply w-full bg-primary-color p-2 pl-4 focus-visible:outline-none text-[15px] opacity-90 py-3
 }
 
 .search-phone-button {
   @apply w-[50px] grid place-items-center
+}
+
+.header_action_button {
+  @apply flex flex-col items-center text-[11px] cursor-pointer flex-[1] w-[70px] justify-between
 }
