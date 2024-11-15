@@ -46,7 +46,7 @@
 import CompanyLogoIcon from '@/components/icons/CompanyLogoIcon.vue'
 import SearchIcon from '@/components/icons/SearchIcon.vue'
 import ArrowDownIcon from '@/components/icons/ArrowDownIcon.vue'
-import HeartIcon from '@/components/icons/HeartIcon.vue'
+// import HeartIcon from '@/components/icons/HeartIcon.vue'
 import CartIcon from '@/components/icons/CartIcon.vue'
 import ProfileIcon from '@/components/icons/ProfileIcon.vue'
 </script>
