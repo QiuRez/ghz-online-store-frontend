@@ -111,7 +111,6 @@
       </div>
  
 
-      <!-- <div class="w"> -->
         <div class="relative w-[65%] max-[1185px]:w-[100%]">
           <ArrowSlider 
             side="left"  
@@ -130,9 +129,19 @@
           
           <swiper-container init="false" id="swiper_sales_items">
             <swiper-slide v-for="item in saleItems" class="">
-              <div class="h-[320px]  px-[25px] pt-[22px] pb-[14px] bg-[#BEAAEB] rounded-[20px] max-[666px]:w-[240px] max-[666px]:mx-auto">
+              <div class="h-[320px] px-[25px] pt-[22px] pb-[10px] bg-[#BEAAEB] rounded-[20px] max-[666px]:w-[240px] flex flex-col justify-between gap-2 max-[666px]:mx-auto bg-[url('assets/icons/SaleIcon.svg')]">
                 <div class="h-[223px] bg-white">
                   <img src="" alt="">
+                </div>
+                <div class="flex flex-col gap-1 justify-between">
+                  <div class="w-[75px] bg-white rounded-[45px] p-1 flex gap-1 whitespace-nowrap items-center">
+                    <SaleIcon class="min-w-[19px] w-[19px] h-[19px]"/>
+                    <p class="text-[#9EA7E0] font-extrabold">-{{ item.salePercent }}%</p>
+                  </div>
+                  <div class="flex justify-between items-end text-white">
+                    <p class="font-extrabold text-[25px] leading-[26px]">{{ item.price }} ₽</p>
+                    <p class="font-extrabold text-[15px] line-through leading-[19px]">{{ item.oldPrice }} ₽</p>
+                  </div>
                 </div>
               </div>
             </swiper-slide>
@@ -154,6 +163,7 @@ import MakePCIcon from "@/components/icons/HomePage/MakePCIcon.vue"
 import SalesIcon from "@/components/icons/HomePage/SalesIcon.vue"
 import ArrowToLeft from "@/components/icons/HomePage/ArrowToLeft.vue"
 import ArrowSlider from "@/components/icons/ArrowSlider.vue"
+import SaleIcon from "@/components/icons/SaleIcon.vue"
 import { register } from 'swiper/element/bundle'
 import 'swiper/css/bundle';
 
@@ -292,8 +302,8 @@ const responsiveOptionsBigMenu = ref([
 
 const saleItems = ref([
   {
-    salePercent: 32,
-    price: '39900',
+    salePercent: 35,
+    price: '39999',
     oldPrice: '49990'
   },
   {
@@ -302,7 +312,7 @@ const saleItems = ref([
     oldPrice: '49990'
   },
   {
-    salePercent: 32,
+    salePercent: 40,
     price: '39900',
     oldPrice: '49990'
   },

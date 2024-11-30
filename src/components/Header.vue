@@ -1,6 +1,6 @@
 <template>
 	<div class="header-phone">
-		<nav class="flex gap-4 flex-col md:flex-row justify-between md:items-center max-w-[1280px] m-auto h-full">
+		<nav class="flex gap-4 flex-col md:flex-row justify-between md:items-center max-w-[1280px] m-auto h-full relative">
 			<div class="flex justify-between md:items-center md:gap-5">
 				<CompanyLogoIcon class="w-auto h-8"/>
 				<div class="px-5 h-8 primary-button">
@@ -8,7 +8,11 @@
 					<!-- TODO: Сделать детект города + выбор города через поп ап -->
 				</div>
 			</div>
-			<div class="primary-button px-4 py-3 !hidden md:!flex !rounded-[7px] gap-3 cursor-pointer">
+			<div 
+			 	@click="katalogRef = !katalogRef"
+				id="katalogMain"
+				class="primary-button px-4 py-3 !hidden md:!flex !rounded-[7px] gap-3 cursor-pointer"
+			>
 				<p class="text-[15px] opacity-60">Каталог</p>
 				<ArrowDownIcon class="w-4"/>
 			</div>
@@ -38,15 +42,91 @@
 				</div>
 
 
+			<div 
+				v-if="katalogRef"
+				id="katalog"
+				class="absolute py-2 px-4 bg-white flex flex-wrap items-stretch gap-[15px_20px] top-[73px] shadow-lg left-[100px] z-10 rounded-xl max-w-[70%]"
+			>
+				<div v-for="item in katalog" class="cursor-pointer hover:underline">
+				<!-- TODO: Добавить значки для категорий -->
+					<!-- <svg></svg> -->
+					<p>{{ item.text }}</p>
+				</div>
+			</div>
 		</nav>
 	</div>
 </template>
 
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import CompanyLogoIcon from '@/components/icons/CompanyLogoIcon.vue'
 import SearchIcon from '@/components/icons/SearchIcon.vue'
 import ArrowDownIcon from '@/components/icons/ArrowDownIcon.vue'
 // import HeartIcon from '@/components/icons/HeartIcon.vue'
 import CartIcon from '@/components/icons/CartIcon.vue'
 import ProfileIcon from '@/components/icons/ProfileIcon.vue'
+
+const katalogRef = ref(false)
+
+const katalog = [
+	{
+		text: 'Видеокарты',
+		icon: '',
+		category: 'videocards'
+	},
+	{
+		text: 'Видеокарты',
+		icon: '',
+		category: 'videocards'
+	},
+	{
+		text: 'Видеокарты',
+		icon: '',
+		category: 'videocards'
+	},
+	{
+		text: 'Видеокарты',
+		icon: '',
+		category: 'videocards'
+	},
+	{
+		text: 'Видеокарты',
+		icon: '',
+		category: 'videocards'
+	},
+	{
+		text: 'Видеокарты',
+		icon: '',
+		category: 'videocards'
+	},
+	{
+		text: 'Видеокарты',
+		icon: '',
+		category: 'videocards'
+	},
+	{
+		text: 'Видеокарты',
+		icon: '',
+		category: 'videocards'
+	},
+	{
+		text: 'Видеокарты',
+		icon: '',
+		category: 'videocards'
+	},
+]
+
+const handleClickOutsideKatalog = (e) => {
+	if (e.target.getAttribute('id') != 'katalog' && !e.target.closest('#katalogMain')) {
+		katalogRef.value = false
+	}
+}
+
+onMounted(() => {
+	document.addEventListener('click', handleClickOutsideKatalog)
+})
+
+onBeforeUnmount(() => {
+	document.removeEventListener('click', handleClickOutsideKatalog)
+})
 </script>
