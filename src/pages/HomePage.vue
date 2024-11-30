@@ -1,80 +1,145 @@
 <template>
-  <main class="main flex flex-col gap-7">
-    <Carousel :value="bigMenuItems" :numVisible="4" :numScroll="1" :responsiveOptions="responsiveOptionsBigMenu" :pt="ptBigMenu">
-      <template #item="slotProps">
-          <div class="w-[240px] min-w-[240px] p-2 md:p-0 h-[224px] cursor-pointer">
-            <div class="w-full h-full rounded-[30px] overflow-hidden py-[21px] px-[28px] relative"
-            :class="slotProps.data.backgroundColor">
-              <p class="text-[20px] md:text-[25px] absolute z-[2] khula-extrabold">{{ slotProps.data.title }}</p>
-              <component :is='slotProps.data.svg' v-if="slotProps.data.svg" :class="slotProps.data.svgStyle"></component>
-            </div>
-          </div>
-      </template>
-    </Carousel>
+  <main class="main flex flex-col gap-7 pb-[100px]">
 
-    <div class="flex flex-wrap justify-around max-[1000px]:gap-4">
-      <div class="w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer">
-        <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-        <p>LOGO</p>
-      </div>
-      <div class="w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer">
-        <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-        <p>LOGO</p>
-      </div>
-      <div class="w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer">
-        <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-        <p>LOGO</p>
-      </div>
-      <div class="w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer">
-        <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-        <p>LOGO</p>
-      </div>
-      <div class="w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer">
-        <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-        <p>LOGO</p>
-      </div>
-      <div class="w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer">
-        <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-        <p>LOGO</p>
-      </div>
-      <div class="w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer">
-        <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-        <p>LOGO</p>
-      </div>
-      <div class="w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer">
-        <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-        <p>LOGO</p>
+  <div class="relative w-full blockHoverArrow">
+    <div class="flex justify-between gap-10 slider-custom-container" id="scrollerBigMenu">
+      <div v-for="item in bigMenuItems" class="w-[240px] min-w-[240px] p-2 md:p-0 h-[224px] cursor-pointer snap-start snap-always">
+        <div class="w-full h-full rounded-[30px] overflow-hidden py-[21px] px-[28px] relative"
+        :class="item.backgroundColor">
+          <p class="text-[20px] md:text-[25px] absolute z-[2] khula-extrabold">{{ item.title }}</p>
+          <component :is='item.svg' v-if="item.svg" :class="item.svgStyle"></component>
+        </div>
       </div>
     </div>
 
-    <div class="max-w-[1248px] w-full h-[369px] bg-[#FF9E9E] rounded-[30px] overflow-hidden flex justify-between p-[20px]">
-      <div class="flex flex-col flex-[2.5] min-w-[300px] justify-between">
-        <div class="w-full flex flex-col gap items-center">
-          <p class="khula-extrabold text-white text-[30px] xl:text-[36px]">Скидки горят!</p>
-          <p class="khula-extrabold text-white text-[20px] xl:text-[24px] text-center">Успейте преобрести <br> товары со скидкой до 70%</p>
+    <ArrowSlider 
+      side="left"  
+      :swiper="true" 
+      :circleBlock="true" 
+      circleBlockCss="bg-gray-500 bg-opacity-[.3] hover:bg-opacity-[.5]" 
+      class="!-left-3 hidden"
+      @click="scrollToPrevBigMenuItem"
+    />
+    <ArrowSlider 
+      side="right" 
+      :swiper="true" 
+      :circleBlock="true" 
+      circleBlockCss="bg-gray-500 bg-opacity-[.3] hover:bg-opacity-[.5]" 
+      class="!-right-3 hidden"
+      @click="scrollToNextBigMenuItem"
+    />
+
+  </div>
+    
+
+
+
+    <div class="relative blockHoverArrow">
+      <div class="flex gap-3 justify-between slider-custom-container" id="scrollerCompanyItem">
+        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
+          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
+          <p>LOGO</p>
         </div>
-        <div class="bg-[#F4BFBF] flex-[5] max-h-[120px] h-[120px] xl:h-[146px] xl:max-h-[146px] rounded-[30px] hover:bg-[#f3d5d5]">
+        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
+          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
+          <p>LOGO</p>
+        </div>
+        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
+          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
+          <p>LOGO</p>
+        </div>
+        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
+          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
+          <p>LOGO</p>
+        </div>
+        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
+          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
+          <p>LOGO</p>
+        </div>
+        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
+          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
+          <p>LOGO</p>
+        </div>
+        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
+          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
+          <p>LOGO</p>
+        </div>
+        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
+          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
+          <p>LOGO</p>
+        </div>
+      </div>
+      
+      <ArrowSlider 
+        side="left"  
+        :swiper="true" 
+        :circleBlock="true" 
+        circleBlockCss="bg-gray-500 bg-opacity-[.3] hover:bg-opacity-[.5]" 
+        class="!-left-3 hidden"
+        @click="scrollToPrevCompanyItem"
+      />
+      <ArrowSlider 
+        side="right" 
+        :swiper="true" 
+        :circleBlock="true" 
+        circleBlockCss="bg-gray-500 bg-opacity-[.3] hover:bg-opacity-[.5]" 
+        class="!-right-3 hidden"
+        @click="scrollToNextCompanyItem"
+      />
+    </div>
+
+    <div class="flex bg-[#FF9E9E] max-[1185px]:flex-col max-[1185px]:justify-center max-[1185px]:items-center max-[1185px]:flex-col-reverse rounded-[30px] gap-3 overflow-hidden justify-between px-6 py-5">
+
+
+      <div class="w-[33%] max-[1185px]:w-[100%] flex flex-col max-[1185px]:flex-row max-[675px]:flex-col items-center justify-around text-center">
+
+        <div class="w-full flex flex-col gap items-center">
+          <p class="khula-extrabold text-white text-[36px]">Скидки горят!</p>
+          <p class="khula-extrabold text-white text-[24px] text-center">Успейте преобрести <br> товары со скидкой до 70%</p>
+        </div>
+        <div class="bg-[#F4BFBF] h-[146px] rounded-[30px] w-[80%] hover:bg-[#f3d5d5]">
           <a href="#" class="w-full h-full flex items-center justify-center pl-10 pr-5">
             <div class="flex justify-around items-center w-full">
-              <p class="font-[800] text-[20px] xl:text-[28px] text-center text-[#664B4B] leading-[30px]">Показать <br> больше акций</p>
-              <div class="rounded-[50%] bg-[#D88585] w-[30px] h-[30px] xl:w-[60px] xl:h-[60px] border-[#AD5557] border flex items-center justify-center">
+              <p class="font-[800] text-[23px] text-center text-[#664B4B] leading-[30px]">Показать <br> больше акций</p>
+              <div class="rounded-[50%] bg-[#D88585] w-[40px] h-[40px] border-[#AD5557] border flex items-center justify-center">
                 <ArrowToLeft class="w-[15px]" />
               </div>
             </div>
           </a>
         </div>
+        
       </div>
-      <div class="flex-[5]">
-        <Carousel :value="saleItems" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptionsSale" :pt="ptSale">
-          <template #item="slotprops">
-            <div class="h-[320px] w-[240px] px-[25px] pt-[22px] pb-[14px] bg-[#BEAAEB] rounded-[20px]">
-              <div class="h-[223px] bg-white">
-                <img src="" alt="">
+ 
+
+      <!-- <div class="w"> -->
+        <div class="relative w-[65%] max-[1185px]:w-[100%]">
+          <ArrowSlider 
+            side="left"  
+            :swiper="true" 
+            :circleBlock="true" 
+            circleBlockCss="bg-primary-color bg-opacity-[.7]" 
+            class="ArrowSliderLeft_0 !-left-[20px]"
+          />
+          <ArrowSlider 
+            side="right" 
+            :swiper="true" 
+            :circleBlock="true" 
+            circleBlockCss="bg-primary-color bg-opacity-[.7]" 
+            class="ArrowSliderRight_0 !-right-[20px]" 
+          />
+          
+          <swiper-container init="false" id="swiper_sales_items">
+            <swiper-slide v-for="item in saleItems" class="">
+              <div class="h-[320px]  px-[25px] pt-[22px] pb-[14px] bg-[#BEAAEB] rounded-[20px] max-[666px]:w-[240px] max-[666px]:mx-auto">
+                <div class="h-[223px] bg-white">
+                  <img src="" alt="">
+                </div>
               </div>
-            </div>
-          </template>
-        </Carousel>
-      </div>
+            </swiper-slide>
+          </swiper-container>
+        </div>
+
+      <!-- </div> -->
     </div>
 
   </main>
@@ -82,25 +147,103 @@
 
 
 <script setup>
-import { ref } from "vue"
-import Carousel from "primevue/carousel"
+import { ref, onMounted } from "vue"
 import CatalogListIcon from "@/components/icons/HomePage/CatalogListIcon.vue"
 import DeliveryIcon from "@/components/icons/HomePage/DeliveryIcon.vue"
 import MakePCIcon from "@/components/icons/HomePage/MakePCIcon.vue"
 import SalesIcon from "@/components/icons/HomePage/SalesIcon.vue"
 import ArrowToLeft from "@/components/icons/HomePage/ArrowToLeft.vue"
+import ArrowSlider from "@/components/icons/ArrowSlider.vue"
+import { register } from 'swiper/element/bundle'
+import 'swiper/css/bundle';
 
-const ptBigMenu = ref({
-  "item": 'flex justify-center min-[1200px]:!flex-[0]',
-  "itemList": "justify-between",
-  "indicatorList": "min-[1200px]:!hidden",
-  "pcPrevButton": {
-    "root": "min-[1200px]:!hidden"
-  },
-  "pcNextButton": {
-    "root": "min-[1200px]:!hidden"
-  },
+const scrollToNextBigMenuItem = () => {
+  scrollerBigMenu.scrollBy({left: 240, top: 0, behavior: 'smooth'})
+}
+const scrollToPrevBigMenuItem = () => {
+  scrollerBigMenu.scrollBy({left: -240, top: 0, behavior: 'smooth'})
+}
+
+const scrollToNextCompanyItem = () => {
+  scrollerCompanyItem.scrollBy({left: 129, top: 0, behavior: 'smooth'})
+}
+const scrollToPrevCompanyItem = () => {
+  scrollerCompanyItem.scrollBy({left: -129, top: 0, behavior: 'smooth'})
+}
+
+
+
+
+
+
+register()
+onMounted(() => {
+
+const scrollerBigMenu = document.querySelector('#scrollerBigMenu');
+const scrollerCompanyItem = document.querySelector('#scrollerCompanyItem');
+
+  
+  // Swiper 
+  const swiperEl = document.querySelector('#swiper_sales_items');
+
+  const swiperParams = {
+    slidesPerView: 1,
+    navigation: {
+      prevEl: '.ArrowSliderLeft_0',
+      nextEl: '.ArrowSliderRight_0',
+    },
+    spaceBetween: 35,
+    breakpoints: {
+      1185: {
+        slidesPerView: 3,
+        spaceBetween: 35,
+      },
+      1147: {
+        slidesPerView: 4,
+        spaceBetween: 60,
+      },
+      1061: {
+        slidesPerView: 4,
+        spaceBetween: 30,
+      },
+      877: {
+        slidesPerView: 3,
+        spaceBetween: 70,
+      },
+      789: {
+        slidesPerView: 2,
+        spaceBetween: 180,
+      },
+      750: {
+        slidesPerView: 2,
+        spaceBetween: 150,
+      },
+      700: {
+        slidesPerView: 2,
+        spaceBetween: 100,
+      },
+      647: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+        centeredSlides: false
+      },
+      557: {
+        slidesPerView: 1,
+        spaceBetween: 100,
+        centeredSlides: true
+      },
+
+    }
+  }
+  Object.assign(swiperEl, swiperParams)
+
+  swiperEl.initialize();
+// Swiper end
 })
+
+
+
+
 
 const bigMenuItems = ref([
   {
@@ -168,21 +311,16 @@ const saleItems = ref([
     price: '39900',
     oldPrice: '49990'
   },
-])
-
-const ptSale = ref({
-  // "indicatorList": "!hidden",
-  "viewport": "max-w-[757px]"
-  // "item": "min-[1160px]:!flex-[0]",
-  // "itemList": " min-[1160px]:justify-around"
-})
-
-const responsiveOptionsSale = ref([
   {
-    numVisible: 2,
-    numScroll: 1,
-    breakpoint: '1160px'
-  }
+    salePercent: 32,
+    price: '39900',
+    oldPrice: '49990'
+  },
+  {
+    salePercent: 32,
+    price: '39900',
+    oldPrice: '49990'
+  },
 ])
 
 </script>
