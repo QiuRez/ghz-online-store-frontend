@@ -88,7 +88,7 @@
       />
     </div>
 
-    <div class="flex bg-[#FF9E9E] max-[1185px]:flex-col max-[1185px]:justify-center max-[1185px]:items-center max-[1185px]:flex-col-reverse rounded-[30px] gap-3 overflow-hidden justify-between px-6 py-5">
+    <div class="flex bg-[#FF9E9E] max-[1185px]:justify-center max-[1185px]:items-center max-[1185px]:flex-col-reverse rounded-[30px] gap-3 overflow-hidden justify-between px-6 py-5">
 
 
       <div class="w-[33%] max-[1185px]:w-[100%] flex flex-col max-[1185px]:flex-row max-[675px]:flex-col items-center justify-around text-center">

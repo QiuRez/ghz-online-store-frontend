@@ -14,7 +14,7 @@
 				class="primary-button px-4 py-3 !hidden md:!flex !rounded-[7px] gap-3 cursor-pointer"
 			>
 				<p class="text-[15px] opacity-60">Каталог</p>
-				<ArrowDownIcon class="w-4"/>
+				<ArrowDownIcon class="w-4 transition-transform duration-200" :class="katalogRef ? 'rotate-180' : ''"/>
 			</div>
 				<!-- TODO: Сделать рабочий поиск -->
 				<form action="" method="GET" class="search-phone-form">
@@ -45,12 +45,12 @@
 			<div 
 				v-if="katalogRef"
 				id="katalog"
-				class="absolute py-2 px-4 bg-white flex flex-wrap items-stretch gap-[15px_20px] top-[73px] shadow-lg left-[100px] z-10 rounded-xl max-w-[70%]"
+				class="absolute py-2 px-4 bg-white flex flex-wrap items-stretch gap-[20px_20px] top-[73px] shadow-lg left-[100px] z-10 rounded-xl max-w-[80%]"
 			>
-				<div v-for="item in katalog" class="cursor-pointer hover:underline">
+				<div v-for="item in mainInfo.categories" class="cursor-pointer hover:underline flex flex-nowrap items-center gap-2">
 				<!-- TODO: Добавить значки для категорий -->
-					<!-- <svg></svg> -->
-					<p>{{ item.text }}</p>
+					<img :src="item.image" class="max-w-[23px]" alt="">
+					<p>{{ item.title }}</p>
 				</div>
 			</div>
 		</nav>
@@ -65,56 +65,13 @@ import ArrowDownIcon from '@/components/icons/ArrowDownIcon.vue'
 // import HeartIcon from '@/components/icons/HeartIcon.vue'
 import CartIcon from '@/components/icons/CartIcon.vue'
 import ProfileIcon from '@/components/icons/ProfileIcon.vue'
+import { useMainStore } from '@/stores/main'
+import { storeToRefs } from 'pinia'
+
+const mainStore = useMainStore()
+const { mainInfo } = storeToRefs(mainStore)
 
 const katalogRef = ref(false)
-
-const katalog = [
-	{
-		text: 'Видеокарты',
-		icon: '',
-		category: 'videocards'
-	},
-	{
-		text: 'Видеокарты',
-		icon: '',
-		category: 'videocards'
-	},
-	{
-		text: 'Видеокарты',
-		icon: '',
-		category: 'videocards'
-	},
-	{
-		text: 'Видеокарты',
-		icon: '',
-		category: 'videocards'
-	},
-	{
-		text: 'Видеокарты',
-		icon: '',
-		category: 'videocards'
-	},
-	{
-		text: 'Видеокарты',
-		icon: '',
-		category: 'videocards'
-	},
-	{
-		text: 'Видеокарты',
-		icon: '',
-		category: 'videocards'
-	},
-	{
-		text: 'Видеокарты',
-		icon: '',
-		category: 'videocards'
-	},
-	{
-		text: 'Видеокарты',
-		icon: '',
-		category: 'videocards'
-	},
-]
 
 const handleClickOutsideKatalog = (e) => {
 	if (e.target.getAttribute('id') != 'katalog' && !e.target.closest('#katalogMain')) {
