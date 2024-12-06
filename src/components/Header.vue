@@ -1,5 +1,5 @@
 <template>
-	<div class="header-phone">
+	<div class="header">
 		<nav class="flex gap-4 flex-col md:flex-row justify-between md:items-center max-w-[1280px] m-auto h-full relative">
 			<div class="flex justify-between md:items-center md:gap-5">
 				<CompanyLogoIcon class="w-auto h-8"/>
@@ -35,13 +35,19 @@
 						<p class="opacity-[0.67]">Цена</p>
 					</div>
 
-					<div class="header_action_button">
+					<div 
+						id="auth-open-modal"
+						@click="isLoggedIn ? router.push({name: 'userAccount'}) : mainStore.setAuthModal(true)"
+						class="header_action_button"
+					>
 						<ProfileIcon />
-						<p class="opacity-[0.67]">Войти</p>
+						<p class="opacity-[0.67]" v-if="!isLoggedIn">Войти</p>
+						<p class="opacity-[0.67]" v-else>Профиль</p>
 					</div>
+
 				</div>
 
-
+			<!-- Каталог -->
 			<div 
 				v-if="headerOptions.catalogShow"
 				id="katalog"
@@ -56,6 +62,25 @@
 					<p>{{ item.title }}</p>
 				</div>
 			</div>
+			<!-- Конец каталога -->
+
+			<!-- Авторизация -->
+			<div 
+				:class="headerOptions.authModal ? 'flex' : 'hidden'"
+				class="fixed inset-0 bg-black bg-opacity-40 z-30 items-center justify-center"
+			>
+				<div id="authModal" class="bg-white flex flex-col gap-[22px] rounded-[29px] py-[22px] w-[400px]">
+					<div class="flex justify-between items-center px-[16px]">
+						<p class="text-[22px] leading-6">Войти <br> или зарегистрироваться</p>
+						<XIcon class="cursor-pointer" @click="mainStore.setAuthModal(false)"/>
+					</div>
+					<hr class="border-black" />
+					<form action="">
+
+					</form>
+				</div>
+			</div>
+			<!-- Конец Авторизации -->
 		</nav>
 	</div>
 </template>
@@ -68,12 +93,17 @@ import ArrowDownIcon from '@/components/icons/ArrowDownIcon.vue'
 // import HeartIcon from '@/components/icons/HeartIcon.vue'
 import CartIcon from '@/components/icons/CartIcon.vue'
 import ProfileIcon from '@/components/icons/ProfileIcon.vue'
+import XIcon from '@/components/icons/XIcon.vue'
 import { useMainStore } from '@/stores/main'
+import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 
 const mainStore = useMainStore()
+const userStore = useUserStore()
+
 const { mainInfo, headerOptions } = storeToRefs(mainStore)
+const { isLoggedIn } = storeToRefs(userStore)
 
 const router = useRouter()
 
@@ -89,11 +119,26 @@ const handleClickOutsideKatalog = (e) => {
 	}
 }
 
+const handleClickOutsideAuth = (e) => {
+	console.log(e.target.getAttribute('id'));
+	if (
+		!e.target.closest('#authModal') &&
+		!e.target.closest('#auth-open-modal') &&
+		!e.target.closest('#katalogMain')
+		// !e.target.closest('#bigItemCatalog') && 
+		// !e.target.closest('#catalogFooterButton')
+	) {
+		mainStore.setAuthModal(false)
+	}
+}
+
 onMounted(() => {
 	document.addEventListener('click', handleClickOutsideKatalog)
+	document.addEventListener('click', handleClickOutsideAuth)
 })
 
 onBeforeUnmount(() => {
 	document.removeEventListener('click', handleClickOutsideKatalog)
+	document.removeEventListener('click', handleClickOutsideAuth)
 })
 </script>

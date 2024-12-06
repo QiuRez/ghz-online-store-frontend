@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios';
 
@@ -6,24 +6,51 @@ const SESSION_STORAGE = 'user'
 
 export const useUserStore = defineStore(SESSION_STORAGE, () => {
 
-  const token = ref('TOKEN')
-  const isLoggedIn = ref(true)
+  const user = ref({})
+  const token = computed(() => user?.value?.token || false)
+  const isLoggedIn = computed(() => user?.value?.token ? true : false)
 
 
-  // const loadDefaultData = () => {
-  //   const sessionStorageData = sessionStorage.getItem(SESSION_STORAGE) ?? [];
+  const registerVerify = (hash, callback) => {
+    axios
+      .post(`email/verify/`, {hash: hash})
+      .then((response) => {
+        if (response?.data?.status == 'success') {
+          user.value = response.data.data.user
+          user.value.token = response.data.data.token
+          localStorage.setItem(SESSION_STORAGE, JSON.stringify(user.value))
+          callback(true)
+        } else {
+          callback(false)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        callback(false)
+      })
+  }
 
-  //   if (! sessionStorageData.length) {
-  //     fetchMainInfo()
-  //   } else {
-  //     mainInfo.value = JSON.parse(sessionStorageData)
-  //   }
-  // }
+  const preventLogout = () => {
+    user.value = {}
+    localStorage.removeItem(SESSION_STORAGE)
+  }
 
-  // loadDefaultData()
+
+  const loadDefaultData = () => {
+    const localStorageData = localStorage.getItem(SESSION_STORAGE) ?? [];
+
+    if (localStorageData.length) {
+      user.value = JSON.parse(localStorageData)
+    } 
+  }
+
+  loadDefaultData()
 
   return {
+    user,
     token,
-    isLoggedIn
+    isLoggedIn,
+    registerVerify,
+    preventLogout
   }
 })

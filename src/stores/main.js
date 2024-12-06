@@ -11,7 +11,8 @@ export const useMainStore = defineStore('main', () => {
   });
 
   const headerOptions = ref({
-    catalogShow: false
+    catalogShow: false,
+    authModal: false
   })
 
   const updateHeaderOptions= (data) => {
@@ -20,6 +21,10 @@ export const useMainStore = defineStore('main', () => {
 
   const setCatalogShow = (data) => {
     headerOptions.value.catalogShow = data
+  }
+
+  const setAuthModal = (data) => {
+    headerOptions.value.authModal = data
   }
 
   const fetchMainInfo = async () => {
@@ -54,6 +59,7 @@ export const useMainStore = defineStore('main', () => {
     mainInfo,
     headerOptions,
     updateHeaderOptions,
-    setCatalogShow
+    setCatalogShow,
+    setAuthModal
   }
 })

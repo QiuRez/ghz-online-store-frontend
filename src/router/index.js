@@ -3,6 +3,25 @@ import { nextTick } from 'vue'
 import HomePage from '@/pages/HomePage.vue'
 import CartPage from '@/pages/CartPage.vue'
 import CategoryPage from '@/pages/CategoryPage.vue'
+import RegisterVerifyPage from '@/pages/RegisterVerifyPage.vue'
+import UserAccount from '@/pages/UserAccount.vue'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+
+const checkAuth = (to, from, next) => {
+  const userStore = useUserStore()
+  const { isLoggedIn } = storeToRefs(userStore)
+
+  if (isLoggedIn.value) {
+    next()
+    return
+  }
+
+  router.push({
+    name: 'home', 
+    query: { needLogin: 1}
+  })
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,7 +40,19 @@ const router = createRouter({
       path: '/categories/:category',
       name: 'category',
       component: CategoryPage
+    },
+    {
+      path: '/confirm/register/:hash',
+      name: 'registerVerify',
+      component: RegisterVerifyPage
+    },
+    {
+      path: '/account',
+      name: 'userAccount',
+      component: UserAccount,
+      beforeEnter: checkAuth
     }
+    
   ]
 })
 

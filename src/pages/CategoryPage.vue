@@ -35,10 +35,12 @@ import { ref, onBeforeMount, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useMainStore } from '@/stores/main';
 import { useCategoryStore } from '@/stores/category';
+import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia';
 import CartIcon from '@/components/icons/CartIcon.vue';
 
 const mainStore = useMainStore()
+const cartStore = useCartStore()
 
 const categoryStore = useCategoryStore()
 const { productsCategory, categoryRef } = storeToRefs(categoryStore)

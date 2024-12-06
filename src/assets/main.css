@@ -106,7 +106,7 @@ swiper-container {
   @apply flex flex-col items-center cursor-pointer h-10 justify-between
 }
 
-.header-phone {
+.header {
   @apply bg-white shadow-[0px_-5px_15px_10px_rgba(0,0,0,0.1)] h-[135px] md:h-[90px] p-4 relative
 }
 
