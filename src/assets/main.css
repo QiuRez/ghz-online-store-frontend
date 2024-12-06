@@ -17,7 +17,7 @@ body {
   background-color: rgba(var(--primary-color-rgb), var(--tw-bg-opacity));
 }
 
-a, p, h1, h2, h3, h4, h5, h6, input {
+a, p, h1, h2, h3, h4, h5, h6, input, button {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;

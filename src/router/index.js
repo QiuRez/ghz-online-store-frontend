@@ -3,7 +3,6 @@ import { nextTick } from 'vue'
 import HomePage from '@/pages/HomePage.vue'
 import CartPage from '@/pages/CartPage.vue'
 import CategoryPage from '@/pages/CategoryPage.vue'
-import RegisterVerifyPage from '@/pages/RegisterVerifyPage.vue'
 import UserAccount from '@/pages/UserAccount.vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
@@ -40,11 +39,6 @@ const router = createRouter({
       path: '/categories/:category',
       name: 'category',
       component: CategoryPage
-    },
-    {
-      path: '/confirm/register/:hash',
-      name: 'registerVerify',
-      component: RegisterVerifyPage
     },
     {
       path: '/account',
