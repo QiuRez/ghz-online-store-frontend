@@ -4,6 +4,7 @@
 
 :root {
   --primary-color: #D3D9FF;
+  --primary-color-darker: #374e95;
   --primary-color-rgb: 211, 217, 255;
   --primary-background-color: #F4FCFD;
 }
@@ -90,7 +91,7 @@ swiper-container {
 }
 
 .main {
-  @apply max-w-[1280px] m-auto mt-7
+  @apply max-w-[1280px] m-auto mt-7 pb-[100px]
 }
 
 .footer {

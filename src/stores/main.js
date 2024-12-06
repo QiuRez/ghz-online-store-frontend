@@ -6,8 +6,21 @@ const SESSION_STORAGE = 'main_info'
 
 export const useMainStore = defineStore('main', () => {
   const mainInfo = ref({
-    categories: []
+    categories: [],
+    companies: []
   });
+
+  const headerOptions = ref({
+    catalogShow: false
+  })
+
+  const updateHeaderOptions= (data) => {
+    headerOptions.value = {...headerOptions.value, data}
+  }
+
+  const setCatalogShow = (data) => {
+    headerOptions.value.catalogShow = data
+  }
 
   const fetchMainInfo = async () => {
     await axios
@@ -38,6 +51,9 @@ export const useMainStore = defineStore('main', () => {
   loadDefaultData()
 
   return {
-    mainInfo
+    mainInfo,
+    headerOptions,
+    updateHeaderOptions,
+    setCatalogShow
   }
 })

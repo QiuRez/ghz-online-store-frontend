@@ -12,6 +12,7 @@ import router from './router'
 const app = createApp(App)
 
 axios.defaults.baseURL = 'http://laravel.test/api/'
+// axios.defaults.baseURL = 'https://server.fenero.keenetic.link/api'
 
 app.use(createPinia())
 app.use(router)

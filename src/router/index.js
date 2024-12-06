@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { nextTick } from 'vue'
 import HomePage from '@/pages/HomePage.vue'
 import CartPage from '@/pages/CartPage.vue'
+import CategoryPage from '@/pages/CategoryPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,11 @@ const router = createRouter({
       name: 'cart',
       component: CartPage
     },
+    {
+      path: '/categories/:category',
+      name: 'category',
+      component: CategoryPage
+    }
   ]
 })
 

@@ -1,11 +1,15 @@
 <template>
-  <main class="main flex flex-col gap-7 pb-[100px]">
+  <main class="main flex flex-col gap-7">
 
   <div class="relative w-full blockHoverArrow">
     <div class="flex justify-between gap-10 slider-custom-container" id="scrollerBigMenu">
-      <div v-for="item in bigMenuItems" class="w-[240px] min-w-[240px] p-2 md:p-0 h-[224px] cursor-pointer snap-start snap-always">
-        <div class="w-full h-full rounded-[30px] overflow-hidden py-[21px] px-[28px] relative"
-        :class="item.backgroundColor">
+      <div v-for="(item, index) in bigMenuItems" class="w-[240px] min-w-[240px] p-2 md:p-0 h-[224px] cursor-pointer snap-start snap-always">
+        <div 
+          @click="bigMenuItemsEvent[index]"
+          :id="item.id"
+          class="w-full h-full rounded-[30px] overflow-hidden py-[21px] px-[28px] relative"
+          :class="item.backgroundColor"
+        >
           <p class="text-[20px] md:text-[25px] absolute z-[2] khula-extrabold">{{ item.title }}</p>
           <component :is='item.svg' v-if="item.svg" :class="item.svgStyle"></component>
         </div>
@@ -36,37 +40,12 @@
 
     <div class="relative blockHoverArrow">
       <div class="flex gap-3 justify-between slider-custom-container" id="scrollerCompanyItem">
-        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
-          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-          <p>LOGO</p>
-        </div>
-        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
-          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-          <p>LOGO</p>
-        </div>
-        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
-          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-          <p>LOGO</p>
-        </div>
-        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
-          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-          <p>LOGO</p>
-        </div>
-        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
-          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-          <p>LOGO</p>
-        </div>
-        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
-          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-          <p>LOGO</p>
-        </div>
-        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
-          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-          <p>LOGO</p>
-        </div>
-        <div class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start">
-          <!-- TODO: Поменять p на a>img и сделать выгрузку из бэкенда -->
-          <p>LOGO</p>
+        <div
+          v-for="item in mainInfo.companies"
+          @click=""
+          class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start sm:px-8 px-4"
+        >
+          <img :src="item.logo" alt="" class="h-full">
         </div>
       </div>
       
@@ -166,6 +145,11 @@ import ArrowSlider from "@/components/icons/ArrowSlider.vue"
 import SaleIcon from "@/components/icons/SaleIcon.vue"
 import { register } from 'swiper/element/bundle'
 import 'swiper/css/bundle';
+import { useMainStore } from "@/stores/main"
+import { storeToRefs } from "pinia"
+
+const mainStore = useMainStore()
+const { headerOptions, mainInfo } = storeToRefs(mainStore)
 
 const scrollToNextBigMenuItem = () => {
   scrollerBigMenu.scrollBy({left: 240, top: 0, behavior: 'smooth'})
@@ -182,16 +166,9 @@ const scrollToPrevCompanyItem = () => {
 }
 
 
-
-
-
-
 register()
+
 onMounted(() => {
-
-const scrollerBigMenu = document.querySelector('#scrollerBigMenu');
-const scrollerCompanyItem = document.querySelector('#scrollerCompanyItem');
-
   
   // Swiper 
   const swiperEl = document.querySelector('#swiper_sales_items');
@@ -252,7 +229,9 @@ const scrollerCompanyItem = document.querySelector('#scrollerCompanyItem');
 })
 
 
-
+const bigMenuItemsEvent = [
+  function () { mainStore.setCatalogShow(!headerOptions.value.catalogShow) },
+]
 
 
 const bigMenuItems = ref([
@@ -260,25 +239,30 @@ const bigMenuItems = ref([
     title: 'Каталог',
     backgroundColor: 'bg-[#D6E6EE] bg-opacity-[.78]',
     svg: CatalogListIcon,
-    svgStyle: "w-[120px] md:w-[148px] absolute right-[10px] bottom-[10px]"
+    svgStyle: "w-[120px] md:w-[148px] absolute right-[10px] bottom-[10px]",
+    id: 'bigItemCatalog'
   },
-  {
-    title: 'Собрать ПК',
-    backgroundColor: 'bg-[#C7EDDB] bg-opacity-[.60]',
-    svg: MakePCIcon,
-    svgStyle: "w-full z-[1] absolute right-[10px] bottom-[10px]"
-  },
+  // TODO: До дипломной работы
+  // {
+  //   title: 'Собрать ПК',
+  //   backgroundColor: 'bg-[#C7EDDB] bg-opacity-[.60]',
+  //   svg: MakePCIcon,
+  //   svgStyle: "w-full z-[1] absolute right-[10px] bottom-[10px]",
+  //   id: ''
+  // },
   {
     title: 'Акции',
     backgroundColor: 'bg-[#FFFEDD] bg-opacity-[.91]',
     svg: SalesIcon,
-    svgStyle: "w-full z-[1] absolute right-[10px] bottom-[10px]"
+    svgStyle: "w-full z-[1] absolute right-[10px] bottom-[10px]",
+    id: ''
   },
   {
     title: 'Доставка',
     backgroundColor: 'bg-[#EFDAD3] bg-opacity-[.78]',
     svg: DeliveryIcon,
-    svgStyle: "w-[172px] h-auto absolute right-[10px] bottom-[10px]"
+    svgStyle: "w-[172px] h-auto absolute right-[10px] bottom-[10px]",
+    id: ''
   },
 ])
 
