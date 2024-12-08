@@ -10,7 +10,6 @@ export const useUserStore = defineStore(SESSION_STORAGE, () => {
   const token = computed(() => user?.value?.token || false)
   const isLoggedIn = computed(() => user?.value?.token ? true : false)
 
-
   const sendEmail = (email, callback) => {
     axios
       .post('user/sendCode', {email: email})
@@ -56,6 +55,7 @@ export const useUserStore = defineStore(SESSION_STORAGE, () => {
     localStorage.removeItem(SESSION_STORAGE)
   }
 
+  console.log('asd');
 
   const loadDefaultData = () => {
     const localStorageData = localStorage.getItem(SESSION_STORAGE) ?? [];

@@ -4,6 +4,7 @@ import HomePage from '@/pages/HomePage.vue'
 import CartPage from '@/pages/CartPage.vue'
 import CategoryPage from '@/pages/CategoryPage.vue'
 import UserAccount from '@/pages/UserAccount.vue'
+import NotFound from '@/pages/NotFound.vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
@@ -33,7 +34,8 @@ const router = createRouter({
     {
       path: '/cart',
       name: 'cart',
-      component: CartPage
+      component: CartPage,
+      beforeEnter: checkAuth
     },
     {
       path: '/categories/:category',
@@ -45,8 +47,16 @@ const router = createRouter({
       name: 'userAccount',
       component: UserAccount,
       beforeEnter: checkAuth
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: NotFound
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/404'
     }
-    
   ]
 })
 

@@ -1,49 +1,52 @@
 <template>
   <main class="main flex flex-col gap-7">
 
-  <div class="relative w-full blockHoverArrow">
-    <div class="flex justify-between gap-10 slider-custom-container" id="scrollerBigMenu">
-      <div v-for="(item, index) in bigMenuItems" class="w-[240px] min-w-[240px] p-2 md:p-0 h-[224px] cursor-pointer snap-start snap-always">
-        <div 
-          @click="bigMenuItemsEvent[index]"
-          :id="item.id"
-          class="w-full h-full rounded-[30px] overflow-hidden py-[21px] px-[28px] relative"
-          :class="item.backgroundColor"
-        >
-          <p class="text-[20px] md:text-[25px] absolute z-[2] khula-extrabold">{{ item.title }}</p>
-          <component :is='item.svg' v-if="item.svg" :class="item.svgStyle"></component>
+    <div class="relative w-full blockHoverArrow">
+      <div class="flex justify-between gap-10 slider-custom-container" id="scrollerBigMenu">
+        <div v-for="(item, index) in bigMenuItems" class="w-[240px] min-w-[240px] p-2 md:p-0 h-[224px] cursor-pointer snap-start snap-always">
+          <div 
+            @click="bigMenuItemsEvent[index]"
+            :id="item.id"
+            class="w-full h-full rounded-[30px] overflow-hidden py-[21px] px-[28px] relative"
+            :class="item.backgroundColor"
+          >
+            <p class="text-[20px] md:text-[25px] absolute z-[2] khula-extrabold">{{ item.title }}</p>
+            <component :is='item.svg' v-if="item.svg" :class="item.svgStyle"></component>
+          </div>
         </div>
       </div>
+
+      <ArrowSlider 
+        side="left"  
+        :swiper="true" 
+        :circleBlock="true" 
+        circleBlockCss="bg-gray-500 bg-opacity-[.3] hover:bg-opacity-[.5]" 
+        class="!-left-3 hidden"
+        @click="scrollToPrevBigMenuItem"
+      />
+      <ArrowSlider 
+        side="right" 
+        :swiper="true" 
+        :circleBlock="true" 
+        circleBlockCss="bg-gray-500 bg-opacity-[.3] hover:bg-opacity-[.5]" 
+        class="!-right-3 hidden"
+        @click="scrollToNextBigMenuItem"
+      />
+
     </div>
-
-    <ArrowSlider 
-      side="left"  
-      :swiper="true" 
-      :circleBlock="true" 
-      circleBlockCss="bg-gray-500 bg-opacity-[.3] hover:bg-opacity-[.5]" 
-      class="!-left-3 hidden"
-      @click="scrollToPrevBigMenuItem"
-    />
-    <ArrowSlider 
-      side="right" 
-      :swiper="true" 
-      :circleBlock="true" 
-      circleBlockCss="bg-gray-500 bg-opacity-[.3] hover:bg-opacity-[.5]" 
-      class="!-right-3 hidden"
-      @click="scrollToNextBigMenuItem"
-    />
-
-  </div>
     
-
-
-
     <div class="relative blockHoverArrow">
       <div class="flex gap-3 justify-between slider-custom-container" id="scrollerCompanyItem">
+        <div v-if="mainInfo.companies.length == 0" class="flex gap-3 justify-between w-full">
+          <Skeleton
+            v-for="n in 8"
+            class="!min-w-[140px] !max-w-[140px] !h-[46px] !rounded-[20px]" 
+          />
+        </div>
         <div
           v-for="item in mainInfo.companies"
           @click=""
-          class="min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start sm:px-8 px-4"
+          class="company-item"
         >
           <img :src="item.logo" alt="" class="h-full">
         </div>
@@ -108,7 +111,7 @@
           
           <swiper-container init="false" id="swiper_sales_items">
             <swiper-slide v-for="item in saleItems" class="">
-              <div class="h-[320px] px-[25px] pt-[22px] pb-[10px] bg-[#BEAAEB] rounded-[20px] max-[666px]:w-[240px] flex flex-col justify-between gap-2 max-[666px]:mx-auto bg-[url('assets/icons/SaleIcon.svg')]">
+              <div class="product-sale-item">
                 <div class="h-[223px] bg-white">
                   <img src="" alt="">
                 </div>
@@ -144,6 +147,7 @@ import ArrowToLeft from "@/components/icons/HomePage/ArrowToLeft.vue"
 import ArrowSlider from "@/components/icons/ArrowSlider.vue"
 import SaleIcon from "@/components/icons/SaleIcon.vue"
 import { register } from 'swiper/element/bundle'
+import Skeleton from 'primevue/skeleton';
 import 'swiper/css/bundle';
 import { useMainStore } from "@/stores/main"
 import { storeToRefs } from "pinia"
@@ -164,7 +168,6 @@ const scrollToNextCompanyItem = () => {
 const scrollToPrevCompanyItem = () => {
   scrollerCompanyItem.scrollBy({left: -129, top: 0, behavior: 'smooth'})
 }
-
 
 register()
 

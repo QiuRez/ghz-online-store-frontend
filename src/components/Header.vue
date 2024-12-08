@@ -22,7 +22,7 @@
 					<button class="search-phone-button"><SearchIcon /></button>
 				</form>
 
-				<div class="md:flex gap-2 hidden ">
+				<div class="md:flex gap-2 hidden">
 
 					<!-- TODO: Добавить функционал на дипломную -->
 					<!-- <div class="header_action_button">
@@ -30,9 +30,19 @@
 						<p class="opacity-[0.67]">Избранное</p>
 					</div> -->
 
-					<div class="header_action_button">
-						<CartIcon />
-						<p class="opacity-[0.67]">Цена</p>
+					<div 
+						@click="isLoggedIn ? router.push({name: 'cart'}) : mainStore.setAuthModal(true)"
+						class="header_action_button"
+						id="nav-cart-button"
+					>
+						<CartIcon :cartCount="cartCountProducts" />
+						<p 
+							v-if="!cartAllPrice"
+							class="opacity-[0.67]"
+						>
+							Корзина
+						</p>
+						<p v-else class="font-semibold">{{ cartAllPrice }} ₽</p>
 					</div>
 
 					<div 
@@ -132,13 +142,15 @@
 								class="py-[30px] px-[20px] border border-black border-opacity-40 rounded-[18px] text-[18px] w-full"
 							>
 						</form>
-						<p class="px-[34px]">Отправить повторно через 30 сек.</p>
+						<p v-if="!sendReply" class="px-[34px]">Отправить повторно через {{ timerSecond }} сек.</p>
+						<p v-else class="px-[34px] text-blue-500 cursor-pointer" @click="onSendEmail">Отправить код</p>
 					</div>
 					<!-- Конец Формы ввода полученного кода -->
 				</div>
 			</div>
 			<!-- Конец Авторизации/Регистрации -->
 		</nav>
+		<Toast group="auth" position="top-center" />
 	</div>
 </template>
 
@@ -153,18 +165,24 @@ import ProfileIcon from '@/components/icons/ProfileIcon.vue'
 import XIcon from '@/components/icons/XIcon.vue'
 import Loader from '@/components/Loader.vue'
 import ArrowBoldIcon from '@/components/icons/ArrowBoldIcon.vue'
+import { useToast } from "vue-toastification";
 import { useMainStore } from '@/stores/main'
+import { useCartStore } from '@/stores/cart'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 
 const mainStore = useMainStore()
 const userStore = useUserStore()
+const cartStore = useCartStore()
 
 const { mainInfo, headerOptions } = storeToRefs(mainStore)
 const { isLoggedIn } = storeToRefs(userStore)
+const { cartAllPrice, cartCountProducts } = storeToRefs(cartStore)
 
 const router = useRouter()
+
+const toast = useToast()
 
 const email = ref('')
 const code = ref('')
@@ -179,22 +197,46 @@ watch(code, (x) => {
 	}
 })
 
+const timerSecond = ref(30)
+const sendReply = ref(false)
+
+const timer = () => {
+	const interval = setInterval(() => {
+		if (timerSecond.value != 1) {
+			timerSecond.value--
+		} else {
+			clearInterval(interval)
+			sendReply.value = true;
+			timerSecond.value = 30
+		}
+	}, 1000)
+}
 
 const onSendEmail = () => {
 	loaderAuth.value = true
 	userStore.sendEmail(email.value, (status) => {
 		if (status) {
 			stepAuth.value = 2
+			sendReply.value = false
+			timer()
 		}
 		loaderAuth.value = false
 	})
 }
 
+watch(isLoggedIn, (x) => {
+	if (x) {
+		cartStore.getCart()
+	}
+})
+
 const onAuth = () => {
 	loaderAuth.value = true
 	userStore.auth(email.value, code.value, (status) => {
 		if (status) {
+			toast.success('Вы успешно авторизовались!')
 			mainStore.setAuthModal(false)
+			timer()
 			stepAuth.value = 1
 		}
 		loaderAuth.value = false
@@ -214,15 +256,15 @@ const handleClickOutsideKatalog = (e) => {
 }
 
 const handleClickOutsideAuth = (e) => {
-	console.log(e.target.getAttribute('id'));
 	if (
 		!e.target.closest('#authModal') &&
 		!e.target.closest('#auth-open-modal') &&
-		!e.target.closest('#katalogMain')
+		!e.target.closest('#katalogMain') &&
+		!e.target.closest('#nav-cart-button')
 	) {
 		mainStore.setAuthModal(false)
 		loaderAuth.value = false
-		code.value = false
+		code.value = ''
 	}
 }
 

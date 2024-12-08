@@ -87,7 +87,7 @@ swiper-container {
 }
 
 .primary-button {
-  @apply bg-primary-color flex items-center justify-center rounded-full
+  @apply bg-primary-color flex items-center justify-center rounded-full hover:bg-opacity-70
 }
 
 .main {
@@ -123,5 +123,21 @@ swiper-container {
 }
 
 .header_action_button {
-  @apply flex flex-col items-center text-[11px] cursor-pointer flex-[1] w-[70px] justify-between
+  @apply flex flex-col items-center text-[11px] cursor-pointer flex-[1] w-[70px] justify-between py-2 rounded-[10px] hover-bg-white
+}
+
+.hover-bg-white {
+  @apply hover:bg-black hover:bg-opacity-[.04]
+}
+
+.cartCountProduct {
+  @apply after:w-5 after:h-5 after:rounded-[50%] after:flex after:items-center after:justify-center after:absolute after:text-white after:font-semibold after:text-[15px] after:z-20 after:bg-white after:text-primary-color-darker after:border after:border-black after:border-opacity-30 after:-top-2 after:-right-3
+}
+
+.company-item {
+  @apply min-w-[129px] h-[46px] bg-white rounded-[20px] flex items-center justify-center cursor-pointer snap-start sm:px-8 px-4 hover-bg-white
+}
+
+.product-sale-item {
+  @apply h-[320px] px-[25px] pt-[22px] pb-[10px] bg-[#BEAAEB] rounded-[20px] max-[666px]:w-[240px] flex flex-col justify-between gap-2 max-[666px]:mx-auto bg-[url('assets/icons/SaleIcon.svg')]
 }
