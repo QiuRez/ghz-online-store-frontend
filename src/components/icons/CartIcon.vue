@@ -29,7 +29,7 @@ const props = defineProps({
     cartCount: {
         type: Number,
         default: 0
-    }
+    },
 })
 
 const cartCount = toRef(props, 'cartCount')

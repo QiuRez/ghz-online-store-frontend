@@ -13,8 +13,9 @@
 					<li 
 					 	@click="router.push({ name: 'cart' })"
 						class="footer-nav-menu-phone-item"
+						id='nav-cart-button'
 					>
-						<CartIcon />
+						<CartIcon :cartCount="cartCountProducts" />
 						<p class="text-xs">Корзина</p>
 					</li>
 					<li 
@@ -49,13 +50,16 @@ import ListIcon from "@/components/icons/ListIcon.vue"
 import ProfileIcon from "@/components/icons/ProfileIcon.vue"
 import { useMainStore } from '@/stores/main'
 import { useUserStore } from '@/stores/user'
+import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 
 const mainStore = useMainStore()
 const userStore = useUserStore()
+const cartStore = useCartStore()
 
 const { headerOptions } = storeToRefs(mainStore)
 const { isLoggedIn } = storeToRefs(userStore)
+const { cartCountProducts } = storeToRefs(cartStore)
 
 const router = useRouter()
 

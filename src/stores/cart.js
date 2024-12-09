@@ -14,20 +14,60 @@ export const useCartStore = defineStore(STORAGE, () => {
   const cartCountProducts = computed(() => cartProducts.value.reduce((sum, item) => {
     return sum + parseInt(item['count'])
   }, 0))
+  const cartLoaded = ref(false);
 
   const userStore = useUserStore()
   const { isLoggedIn } = storeToRefs(userStore)
 
-  const addItem = (id) => {
-    cartProducts.value = {...cart.value, id}
+  const addItem = (id, callback) => {
+    const data = {
+      product_id: id.toString()
+    }
+
+    const { axiosInstance } = fetcher()
+    axiosInstance
+      .post('user/cart/add', data)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.status == 'success') {
+          cartProducts.value = response.data.data.products
+          cartAllPrice.value = response.data.data.allPrice
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        callback(true)
+      })
   }
 
-  const removeItem = (id) => {
-    cartProducts.value = cart.value.filter(item => item.id !== id)
+  const removeItem = (id, callback) => {
+    const data = {
+      product_id: id.toString()
+    }
+
+    const { axiosInstance } = fetcher()
+    axiosInstance
+      .post('user/cart/remove', data)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.status == 'success') {
+          cartProducts.value = response.data.data.products
+          cartAllPrice.value = response.data.data.allPrice
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        callback(true)
+      })
   }
 
   const getCart = () => {
     const { axiosInstance } = fetcher()
+    cartLoaded.value = true
     
     axiosInstance
       .get('user/cart/get')
@@ -39,6 +79,9 @@ export const useCartStore = defineStore(STORAGE, () => {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        cartLoaded.value = false
       })
   }
 
@@ -57,6 +100,7 @@ export const useCartStore = defineStore(STORAGE, () => {
     cartProducts,
     cartAllPrice,
     cartCountProducts,
+    cartLoaded,
     getCart,
     addItem,
     removeItem
