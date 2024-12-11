@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <div id="cartIconBlock" :class="cartCount && `cartCountProduct`">
+        <div :id="`cartIconBlock${showCount ? '' : '1'}`" :class="cartCount && `cartCountProduct`">
             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_1_72)">
                     <path
@@ -30,18 +30,27 @@ const props = defineProps({
         type: Number,
         default: 0
     },
+    showCount: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const cartCount = toRef(props, 'cartCount')
 
 watch(cartCount, (x) => {
-    if (parseInt(x) > 0) {
+    if (parseInt(x) > 0 && props.showCount) {
         let elementOld = document.querySelector('#cartIconBlockStyle')
         if (elementOld) elementOld.remove()
 
         let style = document.head.appendChild(document.createElement("style"))
         style.id = 'cartIconBlockStyle'
         style.innerHTML = `#cartIconBlock:after { content: '${x}' }`
+    }
+
+    if (parseInt(x) == 0 && props.showCount) {
+        let style = document.head.querySelector('#cartIconBlockStyle')
+        if (style) style.remove()
     }
 })
 

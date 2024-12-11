@@ -35,7 +35,7 @@
 						class="header_action_button"
 						id="nav-cart-button"
 					>
-						<CartIcon :cartCount="cartCountProducts" />
+						<CartIcon :cartCount="cartCountProducts" :showCount="true" />
 						<p 
 							v-if="!cartAllPrice"
 							class="opacity-[0.67]"
@@ -47,12 +47,13 @@
 
 					<div 
 						id="auth-open-modal"
-						@click="isLoggedIn ? router.push({name: 'userAccount'}) : mainStore.setAuthModal(true)"
+						@click="isLoggedIn ? logout() : mainStore.setAuthModal(true)"
 						class="header_action_button"
 					>
 						<ProfileIcon />
+						<!-- TODO: Сделать страницу профиля на диплом -->
 						<p class="opacity-[0.67]" v-if="!isLoggedIn">Войти</p>
-						<p class="opacity-[0.67]" v-else>Профиль</p>
+						<p class="opacity-[0.67]" v-else>Выйти</p>
 					</div>
 
 				</div>
@@ -266,6 +267,11 @@ const handleClickOutsideAuth = (e) => {
 		loaderAuth.value = false
 		code.value = ''
 	}
+}
+
+const logout = () => {
+	userStore.preventLogout()
+	router.push({name: 'home'})
 }
 
 

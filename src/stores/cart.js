@@ -85,6 +85,11 @@ export const useCartStore = defineStore(STORAGE, () => {
       })
   }
 
+  const reset = () => {
+    cartProducts.value = []
+    cartAllPrice.value = ''
+  }
+
   //TODO: Сделать здесь подгрузку корзины
 
   const loadDefaultData = () => {
@@ -103,6 +108,7 @@ export const useCartStore = defineStore(STORAGE, () => {
     cartLoaded,
     getCart,
     addItem,
-    removeItem
+    removeItem,
+    reset
   }
 })
