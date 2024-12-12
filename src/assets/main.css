@@ -87,7 +87,8 @@ swiper-container {
 
 .productItemGridCart {
   grid-template-columns: auto minmax(0%, 1fr) auto;
-  grid-template-rows:minmax(0%, 1fr) auto ;
+  grid-template-rows:minmax(0%, 15%) minmax(0%, 85%);
+  gap: 5px 1%;
   grid-template-areas: 
     "img title menu"
     "img countInput price"

@@ -13,12 +13,15 @@
             :disabled="disableInputCount"
             @changeValueUp="changeCountUp(item.id)"
             @changeValueDown="changeCountDown(item.id)"
-            class="[grid-area:countInput]"
+            class="[grid-area:countInput] self-start"
             :class="isCart ? '' : 'hidden'"
         />
-        <div class="[grid-area:menu]">
-            <TrashIcon class="cursor-pointer self-end mr-3" :class="isCart ? '' : 'hidden'" />
-
+        <div 
+            class="[grid-area:menu] flex justify-self-end mr-3 items-center p-1 hover:bg-black hover:bg-opacity-5 rounded-lg w-fit cursor-pointer"
+            title="Удалить из корзины"
+            @click="onTrash(item.id)"
+        >
+            <TrashIcon :class="isCart ? '' : 'hidden'" />
         </div>
         <p
             class="bg-primary-color md:bg-transparent text-primary-color-darker font-semibold px-3 py-2 rounded-[30px] text-[14px] whitespace-nowrap [grid-area:price]"
@@ -98,6 +101,10 @@ const changeCountDown = (id) => {
         
         disableInputCount.value = false
     })
+}
+
+const onTrash = (id) => {
+    cartStore.removeAllProduct(id)
 }
 
 const cartHasItem = (item) => {

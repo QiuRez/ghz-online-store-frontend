@@ -85,6 +85,28 @@ export const useCartStore = defineStore(STORAGE, () => {
       })
   }
 
+  const removeAllProduct = (id, callback) => {
+    const { axiosInstance } = fetcher()
+    cartLoaded.value = true
+
+    axiosInstance
+      .post('user/cart/removeAllProduct', {product_id: id.toString()})
+      .then((response) => {
+        if (response.data.status == 'success') {
+          cartProducts.value = response.data.data.products
+          cartAllPrice.value = response.data.data.allPrice
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        cartLoaded.value = false
+        callback(true)
+      })
+
+  }
+
   const reset = () => {
     cartProducts.value = []
     cartAllPrice.value = ''
@@ -109,6 +131,7 @@ export const useCartStore = defineStore(STORAGE, () => {
     getCart,
     addItem,
     removeItem,
-    reset
+    reset,
+    removeAllProduct
   }
 })
