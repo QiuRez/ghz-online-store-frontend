@@ -11,7 +11,7 @@
 						<p class="text-xs">Главная</p>
 					</li>
 					<li 
-					 	@click="router.push({ name: 'cart' })"
+					 	@click="isLoggedIn ? router.push({name: 'cart'}) : mainStore.setAuthModal(true)"
 						class="footer-nav-menu-phone-item"
 						id='nav-cart-button'
 					>
@@ -27,7 +27,8 @@
 						<p class="text-xs">Каталог</p>
 					</li>
 					<li 
-					 	@click="isLoggedIn ? logout() : ''"
+					 	@click="isLoggedIn ? logout() : mainStore.setAuthModal(true)"
+						id="auth-open-modal"
 						class="footer-nav-menu-phone-item"
 					>
 						<ProfileIcon />

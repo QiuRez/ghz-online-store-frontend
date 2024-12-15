@@ -104,7 +104,10 @@ export const useCartStore = defineStore(STORAGE, () => {
         cartLoaded.value = false
         callback(true)
       })
+  }
 
+  const findProduct = (product_id) => {
+    return !!cartProducts.value.filter((item) => item.id == product_id).length
   }
 
   const reset = () => {
@@ -132,6 +135,7 @@ export const useCartStore = defineStore(STORAGE, () => {
     addItem,
     removeItem,
     reset,
-    removeAllProduct
+    removeAllProduct,
+    findProduct
   }
 })

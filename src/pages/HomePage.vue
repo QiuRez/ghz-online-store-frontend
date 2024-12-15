@@ -108,29 +108,37 @@
             circleBlockCss="bg-primary-color bg-opacity-[.7]" 
             class="ArrowSliderRight_0 !-right-[20px]" 
           />
+
           
           <swiper-container init="false" id="swiper_sales_items">
-            <swiper-slide v-for="item in saleItems" class="">
+            <swiper-slide v-for="n in 3" v-if="!discountProducts.length">
+              <Skeleton
+                class="!min-w-[236px] !max-w-[236px] !h-[320px] !rounded-[20px]" 
+              />
+            </swiper-slide>
+            <swiper-slide v-for="item in discountProducts" class="">
               <div class="product-sale-item">
-                <div class="h-[223px] bg-white">
-                  <img src="" alt="">
+                <div class="h-[223px] bg-white flex items-center justify-center">
+                  <img :src="item.images" class="object-cover" alt="">
                 </div>
                 <div class="flex flex-col gap-1 justify-between">
                   <div class="w-[75px] bg-white rounded-[45px] p-1 flex gap-1 whitespace-nowrap items-center">
                     <SaleIcon class="min-w-[19px] w-[19px] h-[19px]"/>
-                    <p class="text-[#9EA7E0] font-extrabold">-{{ item.salePercent }}%</p>
+                    <p class="text-[#9EA7E0] font-extrabold">-{{ item.discount[0].amount }}%</p>
                   </div>
                   <div class="flex justify-between items-end text-white">
-                    <p class="font-extrabold text-[25px] leading-[26px]">{{ item.price }} ₽</p>
-                    <p class="font-extrabold text-[15px] line-through leading-[19px]">{{ item.oldPrice }} ₽</p>
+                    <p class="font-extrabold text-[17px] leading-[26px]">{{ item.price_discount	 }} ₽</p>
+                    <p class="font-extrabold text-[11px] line-through leading-[19px]">{{ item.price }} ₽</p>
                   </div>
                 </div>
               </div>
             </swiper-slide>
           </swiper-container>
         </div>
+    </div>
 
-      <!-- </div> -->
+    <div class="py-5 rounded-lg flex flex-col gap-5">
+      <ProductItem :products="products" />
     </div>
 
   </main>
@@ -138,10 +146,10 @@
 
 
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref, onMounted, onBeforeMount } from "vue"
 import CatalogListIcon from "@/components/icons/HomePage/CatalogListIcon.vue"
 import DeliveryIcon from "@/components/icons/HomePage/DeliveryIcon.vue"
-import MakePCIcon from "@/components/icons/HomePage/MakePCIcon.vue"
+// import MakePCIcon from "@/components/icons/HomePage/MakePCIcon.vue"
 import SalesIcon from "@/components/icons/HomePage/SalesIcon.vue"
 import ArrowToLeft from "@/components/icons/HomePage/ArrowToLeft.vue"
 import ArrowSlider from "@/components/icons/ArrowSlider.vue"
@@ -151,9 +159,14 @@ import Skeleton from 'primevue/skeleton';
 import 'swiper/css/bundle';
 import { useMainStore } from "@/stores/main"
 import { storeToRefs } from "pinia"
+import ProductItem from "@/components/ProductItem.vue"
+import { useProductStore } from '@/stores/product'
 
 const mainStore = useMainStore()
+const productStore = useProductStore()
+
 const { headerOptions, mainInfo } = storeToRefs(mainStore)
+const { products, discountProducts } = storeToRefs(productStore)
 
 const scrollToNextBigMenuItem = () => {
   scrollerBigMenu.scrollBy({left: 240, top: 0, behavior: 'smooth'})
@@ -269,24 +282,6 @@ const bigMenuItems = ref([
   },
 ])
 
-const responsiveOptionsBigMenu = ref([
-  {
-    breakpoint: '1200px',
-    numVisible: 3,
-    numScroll: 1
-  },
-  {
-    breakpoint: '907px',
-    numVisible: 2,
-    numScroll: 1
-  },
-  {
-    breakpoint: '691px',
-    numVisible: 1,
-    numScroll: 1
-  },
-])
-
 const saleItems = ref([
   {
     salePercent: 35,
@@ -320,4 +315,9 @@ const saleItems = ref([
   },
 ])
 
+
+onBeforeMount(() => {
+  productStore.fetchAllProducts()
+  productStore.fetchAllDiscountProducts()
+})
 </script>

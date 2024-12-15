@@ -78,11 +78,11 @@
 			<!-- Авторизация/Регистрация -->
 			<div 
 				:class="headerOptions.authModal ? 'flex' : 'hidden'"
-				class="fixed inset-0 bg-black bg-opacity-40 z-30 items-center justify-center"
+				class="fixed inset-0 bg-black bg-opacity-40 z-[60] items-center justify-center"
 			>
 				<div 
 					id="authModal" 
-					class="w-[400px] relative flex flex-row flex-nowrap overflow-hidden gap-[20px] items-center"
+					class="md:w-[400px] w-[350px] relative flex flex-row flex-nowrap overflow-hidden gap-[20px] items-center"
 					
 				>
 					<div
@@ -94,8 +94,8 @@
 					</div>
 					<!-- Форма ввода почты -->
 					<div 
-						class="flex flex-col gap-[22px] w-[400px] min-w-[400px] transform duration-300 bg-white rounded-[29px] py-[22px]"
-						:class="stepAuth === 2 && '-translate-x-[420px]'"
+						class="flex flex-col gap-[22px] w-[350px] min-w-[350px] md:w-[400px]  md:min-w-[400px] transform duration-300 bg-white rounded-[29px] py-[22px]"
+						:class="stepAuth === 2 && 'md:-translate-x-[420px] -translate-x-[370px]'"
 					>
 						<div class="flex justify-between items-center px-[16px]">
 							<p class="text-[22px] leading-6">Войти <br> или зарегистрироваться</p>
@@ -123,11 +123,11 @@
 					<!-- Форма ввода полученного кода -->
 					<div 
 						class="duration-300 transform w-full flex flex-col justify-between py-[21px] bg-white rounded-[29px] h-[256px]"
-						:class="stepAuth === 2 && '-translate-x-[420px]'"
+						:class="stepAuth === 2 && 'md:-translate-x-[420px] -translate-x-[370px]'"
 					>
-						<div class="flex justify-between items-center px-[20px] w-[400px]">
+						<div class="flex justify-between items-center px-[20px] w-[350px] md:w-[400px]">
 							<ArrowBoldIcon class="cursor-pointer" @click="stepAuth = 1" />
-							<p class="text-[22px] text-nowrap">Введите полученный код</p>
+							<p class="text-lg md:text-[22px] text-nowrap">Введите полученный код</p>
 							<XIcon class="cursor-pointer w-6" @click="mainStore.setAuthModal(false); stepAuth = 1"/>
 						</div>
 						<hr class="border-black" />

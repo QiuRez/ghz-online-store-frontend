@@ -4,33 +4,34 @@
         :class="isCart ? 'productItemGridCart' : 'shadow-lg'"
     >
         <img :src="item.images" alt="" class="w-[100px] h-[100px] md:w-[200px] md:h-[200px] [grid-area:img]">
-        <a href="" class="flex flex-col gap-2 text-pretty h-fit [grid-area:title]">
-            <p class="text-[14px] font-medium">{{ item.title }}</p>
-            <p v-if="!isCart" class="text-[13px] break-all">{{ item.description }}</p>
-        </a>
+        <div class="flex flex-col gap-2 text-pretty h-fit [grid-area:title] cursor-pointer" @click="router.push({name: 'productItem', params: { slug: item.slug} })">
+            <p class="text-[12px] md:text-[14px] font-medium">{{ item.title }}</p>
+            <p v-if="!isCart" class="text-[11px] md:text-[13px] break-all">{{ item.description }}</p>
+        </div>
         <InputNumber 
             :defaultValue="item.count"
             :disabled="disableInputCount"
             @changeValueUp="changeCountUp(item.id)"
             @changeValueDown="changeCountDown(item.id)"
             class="[grid-area:countInput] self-start"
-            :class="isCart ? '' : 'hidden'"
+            :class="isCart ? '' : '!hidden'"
         />
         <div 
-            class="[grid-area:menu] flex justify-self-end mr-3 items-center p-1 hover:bg-black hover:bg-opacity-5 rounded-lg w-fit cursor-pointer"
+            class="[grid-area:menu] flex md:justify-self-end mr-3 h-fit md:items-center p-1 hover:bg-black hover:bg-opacity-5 rounded-lg w-fit cursor-pointer justify-self-end items-start"
             title="Удалить из корзины"
             @click="onTrash(item.id)"
         >
             <TrashIcon :class="isCart ? '' : 'hidden'" />
         </div>
         <p
-            class="bg-primary-color md:bg-transparent text-primary-color-darker font-semibold px-3 py-2 rounded-[30px] text-[14px] whitespace-nowrap [grid-area:price]"
+            class="bg-primary-color md:bg-transparent text-primary-color-darker font-semibold px-3 py-2 rounded-[30px] text-[12px] md:text-sm whitespace-nowrap [grid-area:price]"
         >
             {{ item.price }} ₽
         </p>
         <button
-            class="[grid-area:button] border border-black border-opacity-30 md:border-primary-color pr-1 bg-opacity-50 w-8 h-8 md:w-fit md:h-auto md:py-2 md:px-3 duration-300 enabled:hover:bg-primary-color items-center justify-center rounded-lg"
+            class="[grid-area:button] border border-black border-opacity-30 md:border-primary-color bg-opacity-50 w-8 h-8 md:w-fit md:h-auto md:py-2 md:px-3 duration-300 enabled:hover:bg-primary-color items-center justify-center rounded-lg"
             :class="isCart ? 'hidden' : 'flex'"
+            id="auth-open-modal"
             @click="() => {
                 if (isLoggedIn) {
                     if (cartHasItem(item)) {
@@ -44,9 +45,11 @@
             }"
             :disabled="waitResponse"
         >
-            <CartIcon color="#BEAAEB" class="md:hidden" />
+            <CartIcon color="#BEAAEB" v-if="!cartHasItem(item)" class="pr-1 md:hidden" />
+            <CheckIcon color="#BEAAEB" v-if="cartHasItem(item)" class="self-center md:hidden" />
+
             <p class="hidden md:block" v-if="!cartHasItem(item)">В корзину</p>
-            <p class="hidden md:block" v-if="cartHasItem(item)">В корзине</p>
+            <p class="hidden md:block" v-else>В корзине</p>
         </button>
     </div>
 </template>
@@ -59,6 +62,7 @@ import { useCartStore } from '@/stores/cart';
 import { useUserStore } from '@/stores/user';
 import { useMainStore } from '@/stores/main';
 import TrashIcon from '@/components/icons/TrashIcon.vue'
+import CheckIcon from '@/components/icons/CheckIcon.vue'
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
 
@@ -96,7 +100,6 @@ const changeCountUp = (id) => {
 
 const changeCountDown = (id) => {
     disableInputCount.value = true
-    console.log(id);
     cartStore.removeItem(id, () => {
         
         disableInputCount.value = false
