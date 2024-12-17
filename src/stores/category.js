@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios';
+import { useMainStore } from '@/stores/main';
 
 const SESSION_STORAGE = 'category'
 
@@ -26,7 +27,7 @@ export const useCategoryStore = defineStore(SESSION_STORAGE, () => {
       })
       .catch((error) => {
         if (error.status == 404) {
-          router.push({name: '404'})
+          useMainStore().setNotFound(true)
         }
       })
       .finally(() => {

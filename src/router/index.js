@@ -3,6 +3,7 @@ import { nextTick } from 'vue'
 import HomePage from '@/pages/HomePage.vue'
 import CartPage from '@/pages/CartPage.vue'
 import CategoryPage from '@/pages/CategoryPage.vue'
+import CompanyPage from '@/pages/CompanyPage.vue'
 import ProductCardPage from '@/pages/ProductCardPage.vue'
 import UserAccount from '@/pages/UserAccount.vue'
 import NotFound from '@/pages/NotFound.vue'
@@ -42,6 +43,11 @@ const router = createRouter({
       path: '/categories/:category',
       name: 'category',
       component: CategoryPage
+    },
+    {
+      path: '/companies/:company',
+      name: 'company',
+      component: CompanyPage
     },
     {
       path: '/product/:slug',

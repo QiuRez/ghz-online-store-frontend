@@ -13,7 +13,15 @@
                 <ProductItem :products="cartProducts" :isCart="true" />
             </div>
             <div class="w-[350px] bg-white rounded-[20px] shadow-lg max-[1000px]:w-full h-fit px-3 py-5 flex flex-col gap-5">
-                <p class="text-md text-center">Сумма товаров в корзине: <br> <span class="font-bold">{{ cartAllPrice }} ₽</span></p>
+                <p class="text-md text-center flex flex-col gap-2">Сумма товаров в корзине: <br> 
+                    <span>
+                        <span v-if="cartAllPriceDiscount" class="text-sm">Без скидки: </span>
+                        <span :class="cartAllPriceDiscount ? 'line-through' : 'font-bold'">{{ cartAllPrice }} ₽</span>
+                    </span>
+                    <span v-if="cartAllPriceDiscount" class="font-bold">
+                        <span>Со скидкой: </span>{{ cartAllPriceDiscount }} ₽
+                    </span>
+                </p>
                 <button id="buyModalOpen" class="primary-button px-4 py-1" @click="buyModal = !buyModal">Заказать</button>
             </div>
         </div>
@@ -45,7 +53,7 @@ import { useCartStore } from '@/stores/cart';
 import { storeToRefs } from 'pinia';
 
 const cartStore = useCartStore()
-const { cartProducts, cartCountProducts, cartLoaded, cartAllPrice } = storeToRefs(cartStore)
+const { cartProducts, cartCountProducts, cartLoaded, cartAllPrice, cartAllPriceDiscount } = storeToRefs(cartStore)
 
 const buyModal = ref(false)
 

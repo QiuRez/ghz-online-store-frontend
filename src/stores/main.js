@@ -10,10 +10,16 @@ export const useMainStore = defineStore('main', () => {
     companies: []
   });
 
+  const notFound = ref(false)
+
   const headerOptions = ref({
     catalogShow: false,
     authModal: false
   })
+
+  const setNotFound = (data) => {
+    notFound.value = data
+  }
 
   const updateHeaderOptions= (data) => {
     headerOptions.value = {...headerOptions.value, data}
@@ -58,6 +64,8 @@ export const useMainStore = defineStore('main', () => {
   return {
     mainInfo,
     headerOptions,
+    notFound,
+    setNotFound,
     updateHeaderOptions,
     setCatalogShow,
     setAuthModal

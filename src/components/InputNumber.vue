@@ -10,10 +10,10 @@
         >
             <p class="rotate-90 font-semibold">></p>
         </button>
+            <!-- :disabled="disabledRef" -->
         <input 
             type="number"
             ref="numberInput"
-            :disabled="disabledRef"
             :value="defaultValue"
             @input="({target}) => inputHandler(target.value)"
             @beforeinput="(e) => {
@@ -22,6 +22,7 @@
                 }
             }"
             class="inputNumberInput"
+            disabled
         />
         <button
             @click="incrementValue"

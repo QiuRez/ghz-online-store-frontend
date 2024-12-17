@@ -77,7 +77,7 @@ const router = useRouter()
 const product = ref({})
 
 const productNotFound = () => {
-  router.push({name: '404'});
+  mainStore.setNotFound(true)
 }
 
 watch(router.currentRoute, (page) => {

@@ -45,7 +45,7 @@
         </div>
         <div
           v-for="item in mainInfo.companies"
-          @click=""
+          @click="router.push({name: 'company', params: { company: item.slug }})"
           class="company-item"
         >
           <img :src="item.logo" alt="" class="h-full">
@@ -161,12 +161,15 @@ import { useMainStore } from "@/stores/main"
 import { storeToRefs } from "pinia"
 import ProductItem from "@/components/ProductItem.vue"
 import { useProductStore } from '@/stores/product'
+import { useRouter } from 'vue-router'
 
 const mainStore = useMainStore()
 const productStore = useProductStore()
 
 const { headerOptions, mainInfo } = storeToRefs(mainStore)
 const { products, discountProducts } = storeToRefs(productStore)
+
+const router = useRouter()
 
 const scrollToNextBigMenuItem = () => {
   scrollerBigMenu.scrollBy({left: 240, top: 0, behavior: 'smooth'})

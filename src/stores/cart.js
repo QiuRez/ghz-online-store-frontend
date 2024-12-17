@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
-import axios from 'axios';
 import { useUserStore } from './user';
 import { fetcher } from '@/utils/axios';
 
@@ -11,6 +10,7 @@ export const useCartStore = defineStore(STORAGE, () => {
   //TODO: Сделать оффлайн корзину
   const cartProducts = ref([])
   const cartAllPrice = ref('');
+  const cartAllPriceDiscount = ref('')
   const cartCountProducts = computed(() => cartProducts.value.reduce((sum, item) => {
     return sum + parseInt(item['count'])
   }, 0))
@@ -28,10 +28,13 @@ export const useCartStore = defineStore(STORAGE, () => {
     axiosInstance
       .post('user/cart/add', data)
       .then((response) => {
-        console.log(response.data);
         if (response.data.status == 'success') {
           cartProducts.value = response.data.data.products
           cartAllPrice.value = response.data.data.allPrice
+          cartAllPriceDiscount.value = response.data.data.allPriceDiscount
+          if (cartAllPrice.value == cartAllPriceDiscount.value) {
+            cartAllPriceDiscount.value = false
+          }
         }
       })
       .catch((error) => {
@@ -51,10 +54,13 @@ export const useCartStore = defineStore(STORAGE, () => {
     axiosInstance
       .post('user/cart/remove', data)
       .then((response) => {
-        console.log(response.data);
         if (response.data.status == 'success') {
           cartProducts.value = response.data.data.products
           cartAllPrice.value = response.data.data.allPrice
+          cartAllPriceDiscount.value = response.data.data.allPriceDiscount
+          if (cartAllPrice.value == cartAllPriceDiscount.value) {
+            cartAllPriceDiscount.value = false
+          }
         }
       })
       .catch((error) => {
@@ -75,6 +81,10 @@ export const useCartStore = defineStore(STORAGE, () => {
         if (response.data.status == 'success') {
           cartProducts.value = response.data.data.products
           cartAllPrice.value = response.data.data.allPrice
+          cartAllPriceDiscount.value = response.data.data.allPriceDiscount
+          if (cartAllPrice.value == cartAllPriceDiscount.value) {
+            cartAllPriceDiscount.value = false
+          }
         }
       })
       .catch((error) => {
@@ -95,6 +105,10 @@ export const useCartStore = defineStore(STORAGE, () => {
         if (response.data.status == 'success') {
           cartProducts.value = response.data.data.products
           cartAllPrice.value = response.data.data.allPrice
+          cartAllPriceDiscount.value = response.data.data.allPriceDiscount
+          if (cartAllPrice.value == cartAllPriceDiscount.value) {
+            cartAllPriceDiscount.value = false
+          }
         }
       })
       .catch((error) => {
@@ -131,6 +145,7 @@ export const useCartStore = defineStore(STORAGE, () => {
     cartAllPrice,
     cartCountProducts,
     cartLoaded,
+    cartAllPriceDiscount,
     getCart,
     addItem,
     removeItem,

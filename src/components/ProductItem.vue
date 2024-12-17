@@ -4,7 +4,7 @@
         :class="isCart ? 'productItemGridCart' : 'shadow-lg'"
     >
         <img :src="item.images" alt="" class="w-[100px] h-[100px] md:w-[200px] md:h-[200px] [grid-area:img]">
-        <div class="flex flex-col gap-2 text-pretty h-fit [grid-area:title] cursor-pointer" @click="router.push({name: 'productItem', params: { slug: item.slug} })">
+        <div class="flex flex-col gap-2 text-pretty h-fit [grid-area:title] cursor-pointer hover:text-primary-color duration-200" @click="router.push({name: 'productItem', params: { slug: item.slug} })">
             <p class="text-[12px] md:text-[14px] font-medium">{{ item.title }}</p>
             <p v-if="!isCart" class="text-[11px] md:text-[13px] break-all">{{ item.description }}</p>
         </div>
@@ -24,9 +24,18 @@
             <TrashIcon :class="isCart ? '' : 'hidden'" />
         </div>
         <p
-            class="bg-primary-color md:bg-transparent text-primary-color-darker font-semibold px-3 py-2 rounded-[30px] text-[12px] md:text-sm whitespace-nowrap [grid-area:price]"
+            class="flex flex-col bg-primary-color md:bg-transparent text-primary-color-darker font-semibold px-3 py-2 rounded-[30px] text-[12px] md:text-sm whitespace-nowrap [grid-area:price]"
+            
         >
-            {{ item.price }} ₽
+            <span v-if="item.price_discount" class="text-end">
+                {{ priceWithDiscount(item) }} ₽
+            </span>
+            <span 
+                class="text-end"
+                :class="item.price_discount && 'text-[11px] line-through decoration-indigo-500/80'"
+            >   
+                {{ item.price }} ₽
+            </span>
         </p>
         <button
             class="[grid-area:button] border border-black border-opacity-30 md:border-primary-color bg-opacity-50 w-8 h-8 md:w-fit md:h-auto md:py-2 md:px-3 duration-300 enabled:hover:bg-primary-color items-center justify-center rounded-lg"
@@ -112,6 +121,12 @@ const onTrash = (id) => {
 
 const cartHasItem = (item) => {
     return !!cartProducts.value.filter((cartItem) => cartItem.id === item.id).length
+}
+
+const priceWithDiscount = (item) => {
+    let priceDiscount = item.price_discount.replace(',', '')
+    item.count = item.count || 1
+    return Intl.NumberFormat('en').format(parseFloat(priceDiscount) * item.count) 
 }
 
 const addCart = (id) => {
