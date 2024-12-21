@@ -149,11 +149,11 @@ swiper-container {
 }
 
 .search-phone-form {
-  @apply relative w-full bg-primary-color-custom rounded-lg overflow-hidden flex
+  @apply relative w-full bg-primary-color-custom rounded-lg flex
 }
 
 .search-phone-input {
-  @apply w-full bg-primary-color-custom p-2 pl-4 focus-visible:outline-none text-[15px] opacity-90 py-3
+  @apply w-full bg-primary-color-custom rounded-lg p-2 pl-4 focus-visible:outline-none text-[15px] opacity-90 py-3
 }
 
 .search-phone-button {

@@ -36,6 +36,7 @@ const productsFetched = ref(false)
 
 watch(router.currentRoute, (page) => {
   productsCompany.value = []
+  companyRef.value = {}
   companyStore.fetchCompanyProducts(page.params.company, () => {
     productsFetched.value = true
   })
@@ -44,6 +45,7 @@ watch(router.currentRoute, (page) => {
 
 onBeforeMount(() => {
   const { company } = route.params
+  companyRef.value = {}
   companyStore.fetchCompanyProducts(company, () => {
     productsFetched.value = true
   })

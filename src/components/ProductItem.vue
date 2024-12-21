@@ -1,10 +1,11 @@
 <template>
+    <!-- TODO: Перенести логику v-for в родительский div -->
     <div v-for="item in productsRef"
         class="grid md:flex-row md:justify-between gap-1 p-5 rounded-[30px] bg-white object-cover productItemGrid"
         :class="isCart ? 'productItemGridCart' : 'shadow-lg'"
     >
         <img :src="item.images" alt="" class="w-[100px] h-[100px] md:w-[200px] md:h-[200px] [grid-area:img]">
-        <div class="flex flex-col gap-2 text-pretty h-fit [grid-area:title] cursor-pointer hover:text-primary-color duration-200" @click="router.push({name: 'productItem', params: { slug: item.slug} })">
+        <div class="flex flex-col gap-2 text-pretty h-fit [grid-area:title] cursor-pointer hover:text-indigo-500 duration-200" @click="router.push({name: 'productItem', params: { slug: item.slug} })">
             <p class="text-[12px] md:text-[14px] font-medium">{{ item.title }}</p>
             <p v-if="!isCart" class="text-[11px] md:text-[13px] break-all">{{ item.description }}</p>
         </div>
@@ -18,13 +19,14 @@
         />
         <div 
             class="[grid-area:menu] flex md:justify-self-end mr-3 h-fit md:items-center p-1 hover:bg-black hover:bg-opacity-5 rounded-lg w-fit cursor-pointer justify-self-end items-start"
+            v-if="isCart"
             title="Удалить из корзины"
             @click="onTrash(item.id)"
         >
             <TrashIcon :class="isCart ? '' : 'hidden'" />
         </div>
         <p
-            class="flex flex-col bg-primary-color md:bg-transparent text-primary-color-darker font-semibold px-3 py-2 rounded-[30px] text-[12px] md:text-sm whitespace-nowrap [grid-area:price]"
+            class="flex flex-col bg-primary-color items-center md:items-stretch md:bg-transparent text-primary-color-darker font-semibold px-3 py-2 rounded-[30px] text-[12px] md:text-sm whitespace-nowrap [grid-area:price]"
             
         >
             <span v-if="item.price_discount" class="text-end">

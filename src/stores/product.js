@@ -22,7 +22,7 @@ export const useProductStore = defineStore(SESSION_STORAGE, () => {
       })
   }
 
-  const fetchAllDiscountProducts = () => {
+  const fetchAllDiscountProducts = (callback) => {
     axios
       .get('products/discount/all')
       .then((response) => {
@@ -32,6 +32,25 @@ export const useProductStore = defineStore(SESSION_STORAGE, () => {
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally(() => {
+        callback(true)
+      })
+  }
+
+  const searchProduct = (q, callback) => {
+    axios
+      .get(`search/${q}`)
+      .then((response) => {
+        if (response.data?.data?.products) {
+          callback(response.data.data.products)
+        } else {
+          callback(false)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        callback(false);
       })
   }
 
@@ -54,6 +73,7 @@ export const useProductStore = defineStore(SESSION_STORAGE, () => {
     products,
     discountProducts,
     fetchAllProducts,
+    searchProduct,
     fetchAllDiscountProducts,
     fetchOneProduct
   }

@@ -79,15 +79,13 @@
           <p class="khula-extrabold text-white text-[36px]">Скидки горят!</p>
           <p class="khula-extrabold text-white text-[24px] text-center">Успейте преобрести <br> товары со скидкой до 70%</p>
         </div>
-        <div class="bg-[#F4BFBF] h-[146px] rounded-[30px] w-[80%] hover:bg-[#f3d5d5]">
-          <a href="#" class="w-full h-full flex items-center justify-center pl-10 pr-5">
-            <div class="flex justify-around items-center w-full">
-              <p class="font-[800] text-[23px] text-center text-[#664B4B] leading-[30px]">Показать <br> больше акций</p>
-              <div class="rounded-[50%] bg-[#D88585] w-[40px] h-[40px] border-[#AD5557] border flex items-center justify-center">
-                <ArrowToLeft class="w-[15px]" />
-              </div>
+        <div class="bg-[#F4BFBF] h-[146px] flex items-center justify-center rounded-[30px] w-[80%] hover:bg-[#f3d5d5] pl-10 pr-5 cursor-pointer" @click="router.push({name: 'productSales'})">
+          <div class="flex justify-around items-center w-full">
+            <p class="font-[800] text-[23px] text-center text-[#664B4B] leading-[30px]">Показать <br> больше акций</p>
+            <div class="rounded-[50%] bg-[#D88585] w-[40px] h-[40px] border-[#AD5557] border flex items-center justify-center">
+              <ArrowToLeft class="w-[15px]" />
             </div>
-          </a>
+          </div>
         </div>
         
       </div>
@@ -117,8 +115,9 @@
               />
             </swiper-slide>
             <swiper-slide v-for="item in discountProducts" class="">
+             <!-- TODO: Убрать в отдельный компонент -->
               <div class="product-sale-item">
-                <div class="h-[223px] bg-white flex items-center justify-center">
+                <div class="h-[223px] bg-white flex items-center justify-center cursor-pointer" @click="router.push({name: 'productItem', params: { slug: item.slug }})">
                   <img :src="item.images" class="object-cover" alt="">
                 </div>
                 <div class="flex flex-col gap-1 justify-between">
@@ -132,6 +131,7 @@
                   </div>
                 </div>
               </div>
+              <!--  -->
             </swiper-slide>
           </swiper-container>
         </div>
@@ -250,6 +250,8 @@ onMounted(() => {
 
 const bigMenuItemsEvent = [
   function () { mainStore.setCatalogShow(!headerOptions.value.catalogShow) },
+  function () { router.push({name: 'productSales'}) },
+  function () {  },
 ]
 
 
@@ -285,42 +287,8 @@ const bigMenuItems = ref([
   },
 ])
 
-const saleItems = ref([
-  {
-    salePercent: 35,
-    price: '39999',
-    oldPrice: '49990'
-  },
-  {
-    salePercent: 32,
-    price: '39900',
-    oldPrice: '49990'
-  },
-  {
-    salePercent: 40,
-    price: '39900',
-    oldPrice: '49990'
-  },
-  {
-    salePercent: 32,
-    price: '39900',
-    oldPrice: '49990'
-  },
-  {
-    salePercent: 32,
-    price: '39900',
-    oldPrice: '49990'
-  },
-  {
-    salePercent: 32,
-    price: '39900',
-    oldPrice: '49990'
-  },
-])
-
-
 onBeforeMount(() => {
   productStore.fetchAllProducts()
-  productStore.fetchAllDiscountProducts()
+  productStore.fetchAllDiscountProducts(() => {})
 })
 </script>

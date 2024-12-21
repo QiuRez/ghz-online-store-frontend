@@ -5,6 +5,7 @@ import CartPage from '@/pages/CartPage.vue'
 import CategoryPage from '@/pages/CategoryPage.vue'
 import CompanyPage from '@/pages/CompanyPage.vue'
 import ProductCardPage from '@/pages/ProductCardPage.vue'
+import ProductsSalePage from '@/pages/ProductsSalePage.vue'
 import UserAccount from '@/pages/UserAccount.vue'
 import NotFound from '@/pages/NotFound.vue'
 import { useUserStore } from '@/stores/user'
@@ -55,6 +56,11 @@ const router = createRouter({
       component: ProductCardPage
     },
     {
+      path: '/products/sales',
+      name: 'productSales',
+      component: ProductsSalePage
+    },
+    {
       path: '/account',
       name: 'userAccount',
       component: UserAccount,
@@ -67,7 +73,7 @@ const router = createRouter({
     },
     {
       path: '/:catchAll(.*)',
-      redirect: '/404'
+      component: NotFound
     }
   ]
 })
@@ -75,6 +81,7 @@ const router = createRouter({
 const DEFAULT_TITLE = 'GHZ - Интернет магазин компьютерных комплектующих'
 
 router.afterEach((to) => {
+  window.scrollTo(0,0)
   nextTick(() => {
     document.title = to.meta.title || DEFAULT_TITLE
   })

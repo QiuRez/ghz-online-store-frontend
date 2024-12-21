@@ -3,9 +3,8 @@
 		<nav class="flex gap-4 flex-col md:flex-row justify-between md:items-center max-w-[1280px] m-auto h-full relative">
 			<div class="flex justify-between md:items-center md:gap-5">
 				<CompanyLogoIcon class="w-auto h-8"/>
-				<div class="px-5 h-8 primary-button">
-					<p>Тюмень</p>
-					<!-- TODO: Сделать детект города + выбор города через поп ап -->
+				<div class="px-5 h-8 primary-button cursor-pointer" @click="mainStore.updateHeaderOptions({selectCityModal: true})" id="open-select-city">
+					<p class="text-nowrap">{{ mainInfo.city }}</p>
 				</div>
 			</div>
 			<div 
@@ -17,10 +16,11 @@
 				<ArrowDownIcon class="w-4 transition-transform duration-200" :class="headerOptions.catalogShow ? 'rotate-180' : ''"/>
 			</div>
 				<!-- TODO: Сделать рабочий поиск -->
-				<form action="" method="GET" class="search-phone-form">
-					<input type="text" name="s" class="search-phone-input" placeholder="Поиск по сайту">
+				<div class="search-phone-form" :class="searchItems.length && '!rounded-[.5rem_.5rem_0_0]'">
+					<input type="text" @input="searchInput" @focus="searchInput" v-model="q" class="search-phone-input" placeholder="Поиск по сайту">
+					<SearchSelect v-if="searchItems.length" :items="searchItems" @onSelect="searchItems = []" />
 					<button class="search-phone-button"><SearchIcon /></button>
-				</form>
+				</div>
 
 				<div class="md:flex gap-2 hidden">
 
@@ -77,8 +77,8 @@
 
 			<!-- Авторизация/Регистрация -->
 			<div 
-				:class="headerOptions.authModal ? 'flex' : 'hidden'"
-				class="fixed inset-0 bg-black bg-opacity-40 z-[60] items-center justify-center"
+				v-if="headerOptions.authModal"
+				class="flex fixed inset-0 bg-black bg-opacity-40 z-[60] items-center justify-center"
 			>
 				<div 
 					id="authModal" 
@@ -150,6 +150,23 @@
 				</div>
 			</div>
 			<!-- Конец Авторизации/Регистрации -->
+
+			
+			<div 
+				v-if="headerOptions.selectCityModal"
+				class="flex fixed inset-0 bg-black bg-opacity-40 z-[60] items-center justify-center"
+			>
+				<div 
+					id="selectCountry" 
+					class="md:w-[400px] w-[350px] overflow-auto h-[400px] md:h-auto relative bg-white rounded-lg p-5 flex flex-col"
+					
+				>
+				<XIcon class="cursor-pointer w-6 min-h-5 self-end" @click="mainStore.updateHeaderOptions({selectCityModal: false})"/>
+				<div class="flex flex-wrap  gap-[20px] w-full">
+					<p v-for="city of cities" class="w-full md:w-[45%] cursor-pointer hover:underline" @click="onSelectCity(city)">{{ city }}</p>
+				</div>
+				</div>
+			</div>
 		</nav>
 		<Toast group="auth" position="top-center" />
 	</div>
@@ -165,17 +182,20 @@ import CartIcon from '@/components/icons/CartIcon.vue'
 import ProfileIcon from '@/components/icons/ProfileIcon.vue'
 import XIcon from '@/components/icons/XIcon.vue'
 import Loader from '@/components/Loader.vue'
+import SearchSelect from '@/components/SearchSelect.vue'
 import ArrowBoldIcon from '@/components/icons/ArrowBoldIcon.vue'
 import { useToast } from "vue-toastification";
 import { useMainStore } from '@/stores/main'
 import { useCartStore } from '@/stores/cart'
 import { useUserStore } from '@/stores/user'
+import { useProductStore } from '@/stores/product'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 
 const mainStore = useMainStore()
 const userStore = useUserStore()
 const cartStore = useCartStore()
+const productStore = useProductStore()
 
 const { mainInfo, headerOptions } = storeToRefs(mainStore)
 const { isLoggedIn } = storeToRefs(userStore)
@@ -187,6 +207,9 @@ const toast = useToast()
 
 const email = ref('')
 const code = ref('')
+
+const q = ref('')
+const searchItems = ref([])
 
 const loaderAuth = ref(false)
 
@@ -244,6 +267,29 @@ const onAuth = () => {
 	})
 }
 
+let timeout;
+
+const searchInput = () => {
+	clearTimeout(timeout);
+	if (q.value.length) {
+		timeout = setTimeout(() => {
+			productStore.searchProduct(q.value, (items) => {
+				if (items) {
+					searchItems.value = items
+				} else {
+					return false
+				}
+			})
+		}, 400)
+	} else {
+		searchItems.value = []
+	}
+}
+
+const onSelectCity = (city) => {
+	mainStore.updateMainInfo({ city: city})
+	mainStore.updateHeaderOptions({selectCityModal: false})
+}
 
 const handleClickOutsideKatalog = (e) => {
 	if (
@@ -269,19 +315,52 @@ const handleClickOutsideAuth = (e) => {
 	}
 }
 
+const handleClickOutsideSelectCountry = (e) => {
+	if (!e.target.closest('#selectCountry') && !e.target.closest('#open-select-city')) {
+
+		mainStore.updateHeaderOptions({selectCityModal: false})
+	}
+}
+
 const logout = () => {
 	userStore.preventLogout()
 	router.push({name: 'home'})
 }
 
+const cities = [
+	'Санкт-Петербург',
+	'Москва',
+	'Нижний Новгород',
+	'Казань',
+	'Сочи',
+	'Калининград',
+	'Архангельск',
+	'Астрахань',
+	'Владимир',
+	'Владивосток',
+	'Волгоград',
+	'Тобольск',
+	'Воронеж',
+	'Ростов-на-Дону',
+	'Екатеринбург',
+	'Иркутск',
+	'Суздаль',
+	'Йошкар-Ола',
+	'Ярославль',
+	'Кострома',
+	'Тюмень'
+];
+
 
 onMounted(() => {
 	document.addEventListener('click', handleClickOutsideKatalog)
 	document.addEventListener('click', handleClickOutsideAuth)
+	document.addEventListener('click', handleClickOutsideSelectCountry)
 })
 
 onBeforeUnmount(() => {
 	document.removeEventListener('click', handleClickOutsideKatalog)
 	document.removeEventListener('click', handleClickOutsideAuth)
+	document.removeEventListener('click', handleClickOutsideSelectCountry)
 })
 </script>

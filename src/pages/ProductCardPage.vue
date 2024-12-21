@@ -82,6 +82,8 @@ const productNotFound = () => {
 
 watch(router.currentRoute, (page) => {
   product.value = {}
+  const { slug } = route.params
+
   productStore.fetchOneProduct(slug, (item) => {
     if (item) product.value = item
     else productNotFound()
