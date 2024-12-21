@@ -11,10 +11,11 @@
 						<p class="text-xs">Главная</p>
 					</li>
 					<li 
-					 	@click="router.push({ name: 'cart' })"
+					 	@click="isLoggedIn ? router.push({name: 'cart'}) : mainStore.setAuthModal(true)"
 						class="footer-nav-menu-phone-item"
+						id='nav-cart-button'
 					>
-						<CartIcon />
+						<CartIcon :cartCount="cartCountProducts" :showCount="true" />
 						<p class="text-xs">Корзина</p>
 					</li>
 					<li 
@@ -26,12 +27,13 @@
 						<p class="text-xs">Каталог</p>
 					</li>
 					<li 
-					 	@click="isLoggedIn ? router.push({ name: 'userAccount'}) : ''"
+					 	@click="isLoggedIn ? logout() : mainStore.setAuthModal(true)"
+						id="auth-open-modal"
 						class="footer-nav-menu-phone-item"
 					>
 						<ProfileIcon />
-						<p class="text-xs" v-if="isLoggedIn">Профиль</p>
-						<p class="text-xs" v-else >Войти</p>
+						<p class="text-xs" v-if="!isLoggedIn">Профиль</p>
+						<p class="text-xs" v-else >Выйти</p>
 					</li>
 				</ul>
 			</nav>
@@ -49,15 +51,23 @@ import ListIcon from "@/components/icons/ListIcon.vue"
 import ProfileIcon from "@/components/icons/ProfileIcon.vue"
 import { useMainStore } from '@/stores/main'
 import { useUserStore } from '@/stores/user'
+import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 
 const mainStore = useMainStore()
 const userStore = useUserStore()
+const cartStore = useCartStore()
 
 const { headerOptions } = storeToRefs(mainStore)
 const { isLoggedIn } = storeToRefs(userStore)
+const { cartCountProducts } = storeToRefs(cartStore)
 
 const router = useRouter()
+
+const logout = () => {
+	userStore.preventLogout()
+	router.push({name: 'home'})
+}
 
 // TODO: Изменить routerName у тех items у которых есть страницы
 

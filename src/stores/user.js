@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useCartStore } from '@/stores/cart';
 import axios from 'axios';
 
 const SESSION_STORAGE = 'user'
@@ -54,8 +55,10 @@ export const useUserStore = defineStore(SESSION_STORAGE, () => {
   const preventLogout = () => {
     user.value = {}
     localStorage.removeItem(SESSION_STORAGE)
-  }
 
+    const cartStore = useCartStore()
+	  cartStore.reset()
+  }
 
   const loadDefaultData = () => {
     const localStorageData = localStorage.getItem(SESSION_STORAGE) ?? [];

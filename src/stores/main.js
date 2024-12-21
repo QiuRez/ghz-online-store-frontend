@@ -7,16 +7,24 @@ const SESSION_STORAGE = 'main_info'
 export const useMainStore = defineStore('main', () => {
   const mainInfo = ref({
     categories: [],
-    companies: []
+    companies: [],
+    city: 'Тюмень'
   });
+
+  const notFound = ref(false)
 
   const headerOptions = ref({
     catalogShow: false,
-    authModal: false
+    authModal: false,
+    selectCityModal: false
   })
 
-  const updateHeaderOptions= (data) => {
-    headerOptions.value = {...headerOptions.value, data}
+  const setNotFound = (data) => {
+    notFound.value = data
+  }
+
+  const updateHeaderOptions = (data) => {
+    headerOptions.value = {...headerOptions.value, ...data}
   }
 
   const setCatalogShow = (data) => {
@@ -27,13 +35,17 @@ export const useMainStore = defineStore('main', () => {
     headerOptions.value.authModal = data
   }
 
+  const updateMainInfo = (data) => {
+    mainInfo.value = {...mainInfo.value, ...data}
+    sessionStorage.setItem(SESSION_STORAGE, JSON.stringify(mainInfo.value))
+  }
+
   const fetchMainInfo = async () => {
     await axios
       .get('main/info')
       .then((response) => {
-          console.log(response);
         if (response.data.status == 'success') {
-          sessionStorage.setItem(SESSION_STORAGE, JSON.stringify(response.data.data))
+          sessionStorage.setItem(SESSION_STORAGE, JSON.stringify({...mainInfo.value, ...response.data.data}))
         }
       })
       .catch((error) => {
@@ -58,6 +70,9 @@ export const useMainStore = defineStore('main', () => {
   return {
     mainInfo,
     headerOptions,
+    notFound,
+    updateMainInfo,
+    setNotFound,
     updateHeaderOptions,
     setCatalogShow,
     setAuthModal

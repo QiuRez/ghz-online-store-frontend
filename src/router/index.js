@@ -3,7 +3,11 @@ import { nextTick } from 'vue'
 import HomePage from '@/pages/HomePage.vue'
 import CartPage from '@/pages/CartPage.vue'
 import CategoryPage from '@/pages/CategoryPage.vue'
+import CompanyPage from '@/pages/CompanyPage.vue'
+import ProductCardPage from '@/pages/ProductCardPage.vue'
+import ProductsSalePage from '@/pages/ProductsSalePage.vue'
 import UserAccount from '@/pages/UserAccount.vue'
+import NotFound from '@/pages/NotFound.vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 
@@ -33,7 +37,8 @@ const router = createRouter({
     {
       path: '/cart',
       name: 'cart',
-      component: CartPage
+      component: CartPage,
+      beforeEnter: checkAuth
     },
     {
       path: '/categories/:category',
@@ -41,18 +46,42 @@ const router = createRouter({
       component: CategoryPage
     },
     {
+      path: '/companies/:company',
+      name: 'company',
+      component: CompanyPage
+    },
+    {
+      path: '/product/:slug',
+      name: 'productItem',
+      component: ProductCardPage
+    },
+    {
+      path: '/products/sales',
+      name: 'productSales',
+      component: ProductsSalePage
+    },
+    {
       path: '/account',
       name: 'userAccount',
       component: UserAccount,
       beforeEnter: checkAuth
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: NotFound
+    },
+    {
+      path: '/:catchAll(.*)',
+      component: NotFound
     }
-    
   ]
 })
 
 const DEFAULT_TITLE = 'GHZ - Интернет магазин компьютерных комплектующих'
 
 router.afterEach((to) => {
+  window.scrollTo(0,0)
   nextTick(() => {
     document.title = to.meta.title || DEFAULT_TITLE
   })

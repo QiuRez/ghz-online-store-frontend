@@ -1,6 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 import axios from 'axios';
+import { useMainStore } from '@/stores/main';
 
 const SESSION_STORAGE = 'category'
 
@@ -8,10 +10,13 @@ export const useCategoryStore = defineStore(SESSION_STORAGE, () => {
 
   const productsCategory = ref([])
   const categoryRef = ref({})
-  const categorySearching = ref(true)
-  const categoryFound = ref(true)
+  const categoryFetched = ref(true)
+
+  const router = useRouter()
 
   const fetchCategoryProducts = (category) => {
+    categoryFetched.value = false
+    
     axios
       .get(`/category/products/${category}`)
       .then((response) => {
@@ -22,11 +27,11 @@ export const useCategoryStore = defineStore(SESSION_STORAGE, () => {
       })
       .catch((error) => {
         if (error.status == 404) {
-          categoryFound.value = false
+          useMainStore().setNotFound(true)
         }
       })
       .finally(() => {
-        categorySearching.value = false
+        categoryFetched.value = true
       })
   }
 
@@ -45,6 +50,7 @@ export const useCategoryStore = defineStore(SESSION_STORAGE, () => {
   return {
     productsCategory,
     categoryRef,
+    categoryFetched,
     fetchCategoryProducts
   }
 })
