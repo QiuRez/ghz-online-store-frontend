@@ -4,10 +4,12 @@
         class="grid md:flex-row md:justify-between gap-1 p-5 rounded-[30px] bg-white object-cover productItemGrid"
         :class="isCart ? 'productItemGridCart' : 'shadow-lg'"
     >
-        <img :src="item.images" alt="" class="w-[100px] h-[100px] md:w-[200px] md:h-[200px] [grid-area:img]">
-        <div class="flex flex-col gap-2 text-pretty h-fit [grid-area:title] cursor-pointer hover:text-indigo-500 duration-200" @click="router.push({name: 'productItem', params: { slug: item.slug} })">
+        <div class="[grid-area:img] w-[100px] md:w-[200px] h-full">
+            <img :src="item.images" alt="" class=" md:w-[200px] md:h-[200px] object-contain">
+        </div>
+        <div class="flex flex-col gap-2 text-pretty [grid-area:title] cursor-pointer hover:text-indigo-500 duration-200" @click="router.push({name: 'productItem', params: { slug: item.slug} })">
             <p class="text-[12px] md:text-[14px] font-medium">{{ item.title }}</p>
-            <p v-if="!isCart" class="text-[11px] md:text-[13px] break-all">{{ item.description }}</p>
+            <p v-if="!isCart" class="text-[11px] md:text-[13px] break-all max-h-[178px] overflow-hidden line-clamp-[8]">{{ item.description }}</p>
         </div>
         <InputNumber 
             :defaultValue="item.count"
@@ -26,7 +28,7 @@
             <TrashIcon :class="isCart ? '' : 'hidden'" />
         </div>
         <p
-            class="flex flex-col bg-primary-color items-center md:items-stretch md:bg-transparent text-primary-color-darker font-semibold px-3 py-2 rounded-[30px] text-[12px] md:text-sm whitespace-nowrap [grid-area:price]"
+            class="flex flex-col bg-primary-color h-fit items-center md:items-stretch md:bg-transparent text-primary-color-darker font-semibold px-3 py-2 rounded-[30px] text-[12px] md:text-sm whitespace-nowrap [grid-area:price]"
             
         >
             <span v-if="item.price_discount" class="text-end">
