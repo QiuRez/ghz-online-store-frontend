@@ -9,6 +9,7 @@ import ProductsSalePage from '@/pages/ProductsSalePage.vue'
 import UserAccount from '@/pages/UserAccount.vue'
 import NotFound from '@/pages/NotFound.vue'
 import { useUserStore } from '@/stores/user'
+import { useMainStore } from '@/stores/main'
 import { storeToRefs } from 'pinia'
 
 const checkAuth = (to, from, next) => {
@@ -81,10 +82,13 @@ const router = createRouter({
 const DEFAULT_TITLE = 'GHZ - Интернет магазин компьютерных комплектующих'
 
 router.afterEach((to) => {
+  const { notFound } = storeToRefs(useMainStore())
+  notFound.value = false
   window.scrollTo(0,0)
   nextTick(() => {
     document.title = to.meta.title || DEFAULT_TITLE
   })
+
 })
 
 export default router

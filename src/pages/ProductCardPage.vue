@@ -12,13 +12,13 @@
           </div>
         </div>
         <div class="flex justify-between w-full gap-3">
-          <div class="bg-primary-color p-2 rounded-2xl w-full flex gap-4 items-end">
-            <p class="text-primary-color-darker font-semibold self-center" v-if="product.price_discount">
+          <div class="bg-primary-color p-2 rounded-2xl w-full flex gap-3 sm:gap-4 items-end text-nowrap">
+            <p class="text-primary-color-darker font-semibold self-center text-[13px] md:text-[16px]" v-if="product.price_discount">
               {{ product.price_discount }} ₽
             </p>
             <p 
               class="text-primary-color-darker font-semibold"
-              :class="product.price_discount ? 'line-through text-sm leading-8' : 'self-center'"
+              :class="product.price_discount ? 'line-through text-[12px] sm:text-sm sm:leading-7' : 'self-center'"
               >
               {{ product.price }} ₽
             </p>

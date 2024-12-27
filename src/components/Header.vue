@@ -37,12 +37,12 @@
 					>
 						<CartIcon :cartCount="cartCountProducts" :showCount="true" />
 						<p 
-							v-if="!cartAllPrice"
+							v-if="!cartAllPriceDiscount"
 							class="opacity-[0.67]"
 						>
 							Корзина
 						</p>
-						<p v-else class="font-semibold">{{ cartAllPrice }} ₽</p>
+						<p v-else class="font-semibold">{{ cartAllPriceDiscount }} ₽</p>
 					</div>
 
 					<div 
@@ -199,7 +199,7 @@ const productStore = useProductStore()
 
 const { mainInfo, headerOptions } = storeToRefs(mainStore)
 const { isLoggedIn } = storeToRefs(userStore)
-const { cartAllPrice, cartCountProducts } = storeToRefs(cartStore)
+const { cartAllPrice, cartAllPriceDiscount, cartCountProducts } = storeToRefs(cartStore)
 
 const router = useRouter()
 

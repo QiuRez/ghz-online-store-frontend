@@ -11,6 +11,7 @@ export const useCartStore = defineStore(STORAGE, () => {
   const cartProducts = ref([])
   const cartAllPrice = ref('');
   const cartAllPriceDiscount = ref('')
+  const cartPriceDiffDiscount = ref(false)
   const cartCountProducts = computed(() => cartProducts.value.reduce((sum, item) => {
     return sum + parseInt(item['count'])
   }, 0))
@@ -33,7 +34,9 @@ export const useCartStore = defineStore(STORAGE, () => {
           cartAllPrice.value = response.data.data.allPrice
           cartAllPriceDiscount.value = response.data.data.allPriceDiscount
           if (cartAllPrice.value == cartAllPriceDiscount.value) {
-            cartAllPriceDiscount.value = false
+            cartPriceDiffDiscount.value = false
+          } else {
+            cartPriceDiffDiscount.value = true
           }
         }
       })
@@ -59,7 +62,9 @@ export const useCartStore = defineStore(STORAGE, () => {
           cartAllPrice.value = response.data.data.allPrice
           cartAllPriceDiscount.value = response.data.data.allPriceDiscount
           if (cartAllPrice.value == cartAllPriceDiscount.value) {
-            cartAllPriceDiscount.value = false
+            cartPriceDiffDiscount.value = false
+          } else {
+            cartPriceDiffDiscount.value = true
           }
         }
       })
@@ -83,7 +88,9 @@ export const useCartStore = defineStore(STORAGE, () => {
           cartAllPrice.value = response.data.data.allPrice
           cartAllPriceDiscount.value = response.data.data.allPriceDiscount
           if (cartAllPrice.value == cartAllPriceDiscount.value) {
-            cartAllPriceDiscount.value = false
+            cartPriceDiffDiscount.value = false
+          } else {
+            cartPriceDiffDiscount.value = true
           }
         }
       })
@@ -107,7 +114,9 @@ export const useCartStore = defineStore(STORAGE, () => {
           cartAllPrice.value = response.data.data.allPrice
           cartAllPriceDiscount.value = response.data.data.allPriceDiscount
           if (cartAllPrice.value == cartAllPriceDiscount.value) {
-            cartAllPriceDiscount.value = false
+            cartPriceDiffDiscount.value = false
+          } else {
+            cartPriceDiffDiscount.value = true
           }
         }
       })
@@ -146,6 +155,7 @@ export const useCartStore = defineStore(STORAGE, () => {
     cartCountProducts,
     cartLoaded,
     cartAllPriceDiscount,
+    cartPriceDiffDiscount,
     getCart,
     addItem,
     removeItem,

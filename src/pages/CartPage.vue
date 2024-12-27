@@ -15,10 +15,10 @@
             <div class="w-[350px] bg-white rounded-[20px] shadow-lg max-[1000px]:w-full h-fit px-3 py-5 flex flex-col gap-5">
                 <p class="text-md text-center flex flex-col gap-2">Сумма товаров в корзине: <br> 
                     <span>
-                        <span v-if="cartAllPriceDiscount" class="text-sm">Без скидки: </span>
-                        <span :class="cartAllPriceDiscount ? 'line-through' : 'font-bold'">{{ cartAllPrice }} ₽</span>
+                        <span v-if="cartPriceDiffDiscount" class="text-sm">Без скидки: </span>
+                        <span :class="cartPriceDiffDiscount ? 'line-through' : 'font-bold'">{{ cartAllPrice }} ₽</span>
                     </span>
-                    <span v-if="cartAllPriceDiscount" class="font-bold">
+                    <span v-if="cartPriceDiffDiscount" class="font-bold">
                         <span>Со скидкой: </span>{{ cartAllPriceDiscount }} ₽
                     </span>
                 </p>
@@ -53,7 +53,7 @@ import { useCartStore } from '@/stores/cart';
 import { storeToRefs } from 'pinia';
 
 const cartStore = useCartStore()
-const { cartProducts, cartCountProducts, cartLoaded, cartAllPrice, cartAllPriceDiscount } = storeToRefs(cartStore)
+const { cartProducts, cartCountProducts, cartLoaded, cartAllPrice, cartAllPriceDiscount, cartPriceDiffDiscount } = storeToRefs(cartStore)
 
 const buyModal = ref(false)
 

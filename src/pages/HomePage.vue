@@ -121,9 +121,13 @@
                   <img :src="item.images" class="object-cover" alt="">
                 </div>
                 <div class="flex flex-col gap-1 justify-between">
-                  <div class="w-[75px] bg-white rounded-[45px] p-1 flex gap-1 whitespace-nowrap items-center">
+                  <div class="w-fit bg-white rounded-[45px] p-1 flex gap-1 whitespace-nowrap items-center">
                     <SaleIcon class="min-w-[19px] w-[19px] h-[19px]"/>
-                    <p class="text-[#9EA7E0] font-extrabold">-{{ item.discount[0].amount }}%</p>
+                    <p 
+                      class="text-[#9EA7E0] font-extrabold" 
+                    >
+                      -{{ item.discount[0].amount }} {{ item.discount[0].type == 'percent' ? '%' : '₽' }}
+                    </p>
                   </div>
                   <div class="flex justify-between items-end text-white">
                     <p class="font-extrabold text-[17px] leading-[26px]">{{ item.price_discount	 }} ₽</p>
