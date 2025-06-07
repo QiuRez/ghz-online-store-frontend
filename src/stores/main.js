@@ -45,24 +45,17 @@ export const useMainStore = defineStore('main', () => {
       .get('main/info')
       .then((response) => {
         if (response.data.status == 'success') {
-          sessionStorage.setItem(SESSION_STORAGE, JSON.stringify({...mainInfo.value, ...response.data.data}))
+          mainInfo.value.categories = response.data.data.categories
+          mainInfo.value.companies = response.data.data.companies
         }
       })
       .catch((error) => {
         console.log(error);
       })
-
-    mainInfo.value = JSON.parse(sessionStorage.getItem(SESSION_STORAGE))
   }
 
   const loadDefaultData = () => {
-    const sessionStorageData = sessionStorage.getItem(SESSION_STORAGE) ?? [];
-
-    if (! sessionStorageData.length) {
-      fetchMainInfo()
-    } else {
-      mainInfo.value = JSON.parse(sessionStorageData)
-    }
+    fetchMainInfo()
   }
 
   loadDefaultData()
